@@ -11,6 +11,7 @@ import '../../contact_search/presentation/search_providers.dart';
 import '../../contacts/domain/app_contact.dart';
 import '../../contacts/presentation/contact_tile.dart';
 import '../../contacts/presentation/contacts_providers.dart';
+import '../../export/presentation/export_flow.dart';
 
 class CountryContactsScreen extends ConsumerWidget {
   const CountryContactsScreen({super.key, required this.countryKey});
@@ -176,6 +177,26 @@ class _SelectionBar extends ConsumerWidget {
                   style: theme.textTheme.titleSmall,
                 ),
               ),
+              Builder(
+                // Own context so the iPad share popover anchors here.
+                builder: (context) => IconButton.outlined(
+                  key: const Key('export-selected'),
+                  tooltip: 'Export to CSV',
+                  constraints: const BoxConstraints.tightFor(
+                    width: 48,
+                    height: 48,
+                  ),
+                  icon: const Icon(Icons.ios_share_rounded, size: 20),
+                  onPressed: count == 0
+                      ? null
+                      : () => exportSelectionToCsv(
+                          context,
+                          ref,
+                          countryKey: countryKey,
+                        ),
+                ),
+              ),
+              const SizedBox(width: 8),
               FilledButton.icon(
                 key: const Key('message-selected'),
                 style: FilledButton.styleFrom(minimumSize: const Size(0, 48)),

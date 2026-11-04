@@ -47,6 +47,7 @@ lib/
     communication/ tel: / wa.me link building, CommunicationService,
                    number picker, message composer
     duplicates/    contacts sharing a number or an identical name
+    export/        CSV of selected contacts, shared via the OS share sheet
     settings/      theme + default region (shared_preferences)
 ```
 

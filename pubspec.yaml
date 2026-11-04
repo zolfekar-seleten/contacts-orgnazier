@@ -39,6 +39,7 @@ dependencies:
   phone_numbers_parser: ^9.0.29
   url_launcher: ^6.3.2
   shared_preferences: ^2.5.5
+  share_plus: ^13.3.1
 
 dev_dependencies:
   flutter_test:
