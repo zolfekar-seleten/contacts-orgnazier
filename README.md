@@ -48,6 +48,8 @@ lib/
                    number picker, message composer
     duplicates/    contacts sharing a number or an identical name
     export/        CSV of selected contacts, shared via the OS share sheet
+    local_time/    country → IANA time zones, local time, late-night warnings
+    templates/     saved message templates (shared_preferences)
     settings/      theme + default region (shared_preferences)
 ```
 
@@ -64,6 +66,24 @@ groups:
 
 The app never merges or deletes anything: open a contact and tap **Edit** to
 fix it in the system Contacts app.
+
+## Sort, filter, templates and local time
+
+- **Sort and filter** (country screens): sort by first name, last name or
+  recently added; filter to contacts with a mobile or a landline number there
+  (from numbering-plan metadata, not labels). iOS doesn't expose when a
+  contact was created, so "recently added" means first seen by the app;
+  contacts already on the phone at install count as older.
+- **Saved templates**: reusable messages with name placeholders (starters:
+  Greeting, Eid greeting, Meeting reminder). Save from the bulk message box,
+  manage or delete from **Manage**; also offered, filled in, when messaging
+  one contact.
+- **Local time**: each country's current time (from the bundled IANA time
+  zone database, with daylight saving) shows on country and contact screens.
+  Between 9 PM and 8 AM in a country's main time zone the app asks before
+  calling or messaging, and the bulk composer notes how many recipients it's
+  late for. `lib/features/local_time/domain/country_time_zones.dart` is
+  generated from the tz database's `zone.tab`.
 
 ## App icon
 

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/clock.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/contact_avatar.dart';
 import '../../../core/widgets/whatsapp_icon.dart';
 import '../../contacts/domain/app_contact.dart';
+import '../../local_time/domain/local_time.dart';
+import '../../templates/presentation/template_widgets.dart';
+import '../../templates/presentation/templates_providers.dart';
 import '../domain/broadcast.dart';
 import '../domain/message_template.dart';
 import 'broadcast_providers.dart';
@@ -13,13 +17,6 @@ import 'broadcast_send_screen.dart';
 /// Write one message for many contacts, personalised with name placeholders.
 class BroadcastComposeScreen extends ConsumerStatefulWidget {
   const BroadcastComposeScreen({super.key});
-
-  static const templates = [
-    'Hi {first_name}! 👋',
-    'Hello {first_name}, hope you’re doing well!',
-    'Dear {full_name}, ',
-    'Hi {first_name} {last_name}, just checking in.',
-  ];
 
   @override
   ConsumerState<BroadcastComposeScreen> createState() =>
@@ -98,6 +95,17 @@ class _BroadcastComposeScreenState
     ];
     final skipped = contacts.length - reachable.length;
     final padding = contentPadding(context);
+    final templates = ref.watch(savedTemplatesProvider);
+    final now = ref.watch(minuteTickProvider);
+    final lateNight = reachable.where((c) {
+      final phone = pickBroadcastPhone(
+        c,
+        draft.channel,
+        countryKey: draft.countryKey,
+      );
+      return localTimeIn(phone?.classification.isoCode, now)?.isLateNight ??
+          false;
+    }).length;
 
     return Scaffold(
       appBar: AppBar(title: const Text('New message')),
@@ -157,6 +165,16 @@ class _BroadcastComposeScreenState
                         'no dialable number and will be skipped.',
             ),
           ],
+          if (lateNight > 0) ...[
+            const SizedBox(height: 10),
+            _Notice(
+              key: const Key('late-night-notice'),
+              text:
+                  'It’s late at night for $lateNight '
+                  '${lateNight == 1 ? 'recipient' : 'recipients'} right now '
+                  '(9 PM – 8 AM their time). You may want to send later.',
+            ),
+          ],
           const SizedBox(height: 20),
           const _Label('Message'),
           Wrap(
@@ -190,20 +208,41 @@ class _BroadcastComposeScreenState
             decoration: const InputDecoration(hintText: 'Hi {first_name}, …'),
           ),
           const SizedBox(height: 10),
-          SizedBox(
-            height: 40,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: BroadcastComposeScreen.templates.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 8),
-              itemBuilder: (context, i) {
-                final t = BroadcastComposeScreen.templates[i];
-                return ActionChip(
-                  label: Text(t.trim()),
-                  onPressed: () => _applyTemplate(t),
-                );
-              },
-            ),
+          // Wraps so the save and manage actions are always visible.
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final t in templates) ...[
+                ActionChip(
+                  key: ValueKey('template-${t.id}'),
+                  avatar: const Icon(Icons.bookmark_outline_rounded, size: 18),
+                  label: Text(t.title),
+                  onPressed: () => _applyTemplate(t.body),
+                ),
+              ],
+              ValueListenableBuilder(
+                key: const ValueKey('save-template-slot'),
+                valueListenable: _controller,
+                builder: (context, value, _) => ActionChip(
+                  key: const Key('save-template'),
+                  avatar: const Icon(Icons.bookmark_add_outlined, size: 18),
+                  label: const Text('Save as template'),
+                  onPressed: value.text.trim().isEmpty
+                      ? null
+                      : () => showSaveTemplateDialog(context, ref, value.text),
+                ),
+              ),
+              ActionChip(
+                key: const Key('manage-templates'),
+                avatar: const Icon(Icons.tune_rounded, size: 18),
+                label: const Text('Manage'),
+                onPressed: () async {
+                  final picked = await showTemplatesSheet(context);
+                  if (picked != null) _applyTemplate(picked.body);
+                },
+              ),
+            ],
           ),
           const SizedBox(height: 22),
           if (reachable.isNotEmpty)
@@ -267,7 +306,7 @@ class _Label extends StatelessWidget {
 }
 
 class _Notice extends StatelessWidget {
-  const _Notice({required this.text});
+  const _Notice({super.key, required this.text});
 
   final String text;
 

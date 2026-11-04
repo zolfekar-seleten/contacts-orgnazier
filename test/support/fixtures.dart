@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:country_contacts/core/clock.dart';
 import 'package:country_contacts/features/communication/domain/communication_service.dart';
 import 'package:country_contacts/features/communication/presentation/communication_providers.dart';
 import 'package:country_contacts/features/contacts/domain/contacts_repository.dart';
@@ -90,12 +91,18 @@ class MockUrlLauncher extends Mock implements UrlLauncherGateway {}
 
 void registerFallbacks() => registerFallbackValue(Uri());
 
+/// Daytime in the sample contacts' main countries (UK 13:00, New York 08:00,
+/// UAE 16:00, India 17:30), so no late-night prompts appear unless a test
+/// asks for them.
+final middayUtc = DateTime.utc(2026, 6, 15, 12);
+
 /// Provider overrides for a fully faked app.
 Future<List<Override>> testOverrides({
   required ContactsRepository repository,
   UrlLauncherGateway? launcher,
   String? deviceRegion = 'GB',
   Map<String, Object> prefs = const {},
+  DateTime? now,
 }) async {
   SharedPreferences.setMockInitialValues(prefs);
   final instance = await SharedPreferences.getInstance();
@@ -103,6 +110,7 @@ Future<List<Override>> testOverrides({
     sharedPreferencesProvider.overrideWithValue(instance),
     deviceRegionProvider.overrideWithValue(deviceRegion),
     contactsRepositoryProvider.overrideWithValue(repository),
+    clockProvider.overrideWithValue(() => now ?? middayUtc),
     if (launcher != null) urlLauncherProvider.overrideWithValue(launcher),
   ];
 }

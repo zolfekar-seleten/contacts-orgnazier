@@ -434,7 +434,7 @@ void main() {
       expect(find.text('Continue to WhatsApp'), findsOneWidget);
       verifyNever(() => launcher.launchInApp(any()));
 
-      await tester.tap(find.text('Hi Oliver! 👋'));
+      await tester.tap(find.text('Hi Oliver! 👋 Hope you’re doing well.'));
       await tester.pump();
       await tester.enterText(
         find.byKey(const Key('composer-field')),
@@ -455,14 +455,16 @@ void main() {
       expect(find.textContaining('sent'), findsNothing);
     });
 
-    testWidgets('templates fill the message field', (tester) async {
+    testWidgets('saved templates fill the message field for the contact', (
+      tester,
+    ) async {
       await openComposerForOliver(tester);
-      await tester.tap(find.text('Hi Oliver! 👋'));
+      await tester.tap(find.text('Hi Oliver! 👋 Hope you’re doing well.'));
       await tester.pump();
       final field = tester.widget<TextField>(
         find.byKey(const Key('composer-field')),
       );
-      expect(field.controller!.text, 'Hi Oliver! 👋');
+      expect(field.controller!.text, 'Hi Oliver! 👋 Hope you’re doing well.');
     });
 
     testWidgets('dismissing the composer does nothing', (tester) async {
@@ -554,7 +556,7 @@ void main() {
       await search(tester, 'oliver');
       await tester.tap(find.byTooltip('SMS Oliver Bennett'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Hi Oliver! 👋'));
+      await tester.tap(find.text('Hi Oliver! 👋 Hope you’re doing well.'));
       await tester.tap(find.text('Continue to Messages'));
       await tester.pumpAndSettle();
 

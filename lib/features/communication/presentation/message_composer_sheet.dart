@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/whatsapp_icon.dart';
+import '../../broadcast/domain/message_template.dart';
 import '../../contacts/domain/app_contact.dart';
+import '../../templates/presentation/templates_providers.dart';
 import '../domain/communication_kind.dart';
 
 /// Lets the user write or pick a message before handing off to WhatsApp or
@@ -20,7 +23,7 @@ Future<String?> showMessageComposer(
       MessageComposerSheet(contact: contact, phone: phone, kind: kind),
 );
 
-class MessageComposerSheet extends StatefulWidget {
+class MessageComposerSheet extends ConsumerStatefulWidget {
   const MessageComposerSheet({
     super.key,
     required this.contact,
@@ -37,7 +40,6 @@ class MessageComposerSheet extends StatefulWidget {
   static List<String> templatesFor(String firstName) {
     final first = firstName.isEmpty ? 'there' : firstName;
     return [
-      'Hi $first! 👋',
       'Hi $first, do you have a minute for a quick call?',
       'Running a few minutes late, see you soon.',
       'Thanks, talk soon!',
@@ -45,10 +47,11 @@ class MessageComposerSheet extends StatefulWidget {
   }
 
   @override
-  State<MessageComposerSheet> createState() => _MessageComposerSheetState();
+  ConsumerState<MessageComposerSheet> createState() =>
+      _MessageComposerSheetState();
 }
 
-class _MessageComposerSheetState extends State<MessageComposerSheet> {
+class _MessageComposerSheetState extends ConsumerState<MessageComposerSheet> {
   final _controller = TextEditingController();
   late final _templates = MessageComposerSheet.templatesFor(
     widget.contact.firstName,
@@ -69,6 +72,12 @@ class _MessageComposerSheetState extends State<MessageComposerSheet> {
 
   @override
   Widget build(BuildContext context) {
+    // Saved templates first, filled in for this contact.
+    final templates = [
+      for (final t in ref.watch(savedTemplatesProvider))
+        MessageTemplate.render(t.body, widget.contact),
+      ..._templates,
+    ];
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final country = widget.phone.country;
@@ -132,10 +141,10 @@ class _MessageComposerSheetState extends State<MessageComposerSheet> {
             height: 40,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: _templates.length,
+              itemCount: templates.length,
               separatorBuilder: (_, _) => const SizedBox(width: 8),
               itemBuilder: (context, i) {
-                final text = _templates[i];
+                final text = templates[i];
                 return ActionChip(
                   label: Text(text, maxLines: 1),
                   onPressed: () => _applyTemplate(text),

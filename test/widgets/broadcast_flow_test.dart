@@ -113,6 +113,11 @@ void main() {
       'Hi {first_name}, this is for {full_name} ({last_name})',
     );
     await tester.pump();
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('preview-text')),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     // Recipients are sorted by name: Amelia, Emily, Oliver.
     expect(
       tester.widget<Text>(find.byKey(const Key('preview-text'))).data,

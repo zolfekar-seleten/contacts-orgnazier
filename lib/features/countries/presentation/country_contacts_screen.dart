@@ -12,6 +12,9 @@ import '../../contacts/domain/app_contact.dart';
 import '../../contacts/presentation/contact_tile.dart';
 import '../../contacts/presentation/contacts_providers.dart';
 import '../../export/presentation/export_flow.dart';
+import '../../local_time/presentation/local_time_widgets.dart';
+import '../domain/contact_list_options.dart';
+import 'contact_list_providers.dart';
 
 class CountryContactsScreen extends ConsumerWidget {
   const CountryContactsScreen({super.key, required this.countryKey});
@@ -76,6 +79,15 @@ class CountryContactsScreen extends ConsumerWidget {
                   ),
                 ),
               ),
+              SliverPadding(
+                padding: padding.copyWith(top: 10),
+                sliver: SliverToBoxAdapter(
+                  child: _ListControls(
+                    countryKey: countryKey,
+                    showFilter: !group.isUnknown,
+                  ),
+                ),
+              ),
               if (group.isUnknown)
                 SliverPadding(
                   padding: padding.copyWith(top: 12),
@@ -114,6 +126,7 @@ class _CountryAppBar extends ConsumerWidget implements PreferredSizeWidget {
     if (!selection.active) {
       return AppBar(
         actions: [
+          const _SortMenu(),
           TextButton.icon(
             key: const Key('start-select'),
             onPressed: controller.start,
@@ -219,6 +232,81 @@ class _SelectionBar extends ConsumerWidget {
                 label: const Text('Message'),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Mobile / landline filter chips with counts.
+class _ListControls extends ConsumerWidget {
+  const _ListControls({required this.countryKey, required this.showFilter});
+
+  final String countryKey;
+
+  /// Unknown numbers have no type, so the filter is hidden there.
+  final bool showFilter;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (!showFilter) return const SizedBox.shrink();
+    final options = ref.watch(contactListOptionsProvider);
+    final controller = ref.read(contactListOptionsProvider.notifier);
+    final counts = ref.watch(numberFilterCountsProvider(countryKey));
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          for (final f in NumberFilter.values) ...[
+            ChoiceChip(
+              key: ValueKey('filter-${f.name}'),
+              label: Text('${f.label} ${counts[f] ?? 0}'),
+              selected: options.filter == f,
+              showCheckmark: false,
+              onSelected: (_) => controller.setFilter(f),
+            ),
+            const SizedBox(width: 8),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Sort menu for the app bar; a dot on the icon marks a non-default sort.
+class _SortMenu extends ConsumerWidget {
+  const _SortMenu();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final options = ref.watch(contactListOptionsProvider);
+    final controller = ref.read(contactListOptionsProvider.notifier);
+    return PopupMenuButton<ContactSort>(
+      key: const Key('sort-menu'),
+      tooltip: 'Sort: ${options.sort.label}',
+      initialValue: options.sort,
+      onSelected: controller.setSort,
+      itemBuilder: (context) => [
+        for (final s in ContactSort.values)
+          CheckedPopupMenuItem(
+            key: ValueKey('sort-${s.name}'),
+            value: s,
+            checked: options.sort == s,
+            child: Text(s.label),
+          ),
+      ],
+      child: SizedBox(
+        width: 44,
+        height: 44,
+        child: Badge(
+          isLabelVisible: options.sort != ContactSort.firstName,
+          smallSize: 8,
+          alignment: const AlignmentDirectional(0.5, -0.5),
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          child: Icon(
+            Icons.sort_rounded,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
       ),
@@ -340,6 +428,14 @@ class _CountryBanner extends StatelessWidget {
                                 '${country.isoCode}',
                       style: theme.textTheme.bodyMedium?.copyWith(color: muted),
                     ),
+                    if (country != null) ...[
+                      const SizedBox(height: 6),
+                      LocalTimeLabel(
+                        isoCode: country.isoCode,
+                        color: muted,
+                        suffix: ' there now',
+                      ),
+                    ],
                   ],
                 ),
               ),

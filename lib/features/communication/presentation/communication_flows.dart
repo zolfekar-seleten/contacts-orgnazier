@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/widgets/flag_badge.dart';
 import '../../../core/widgets/whatsapp_icon.dart';
 import '../../contacts/domain/app_contact.dart';
+import '../../local_time/presentation/local_time_widgets.dart';
 import '../domain/communication_kind.dart';
 import '../domain/communication_links.dart';
 import '../domain/communication_service.dart';
@@ -29,6 +30,16 @@ class CommunicationFlows {
       CommunicationKind.call,
     );
     if (phone == null || !context.mounted) return;
+    if (!await _notTooLate(
+          context,
+          ref,
+          contact,
+          phone,
+          CommunicationKind.call,
+        ) ||
+        !context.mounted) {
+      return;
+    }
 
     final result = await ref
         .read(communicationServiceProvider)
@@ -74,6 +85,16 @@ class CommunicationFlows {
       return;
     }
     if (phone == null || !context.mounted) return;
+    if (!await _notTooLate(
+          context,
+          ref,
+          contact,
+          phone,
+          CommunicationKind.whatsApp,
+        ) ||
+        !context.mounted) {
+      return;
+    }
 
     final message = await showMessageComposer(
       context,
@@ -133,6 +154,16 @@ class CommunicationFlows {
       return;
     }
     if (phone == null || !context.mounted) return;
+    if (!await _notTooLate(
+          context,
+          ref,
+          contact,
+          phone,
+          CommunicationKind.sms,
+        ) ||
+        !context.mounted) {
+      return;
+    }
 
     final message = await showMessageComposer(
       context,
@@ -154,6 +185,20 @@ class CommunicationFlows {
       SmsResult.failed => 'Couldn’t open Messages.',
     });
   }
+
+  static Future<bool> _notTooLate(
+    BuildContext context,
+    WidgetRef ref,
+    AppContact contact,
+    ClassifiedPhone phone,
+    CommunicationKind kind,
+  ) async => await confirmLateNight(
+    context,
+    ref,
+    isoCode: phone.classification.isoCode,
+    name: contact.firstName.isEmpty ? contact.displayName : contact.firstName,
+    kind: kind,
+  );
 
   static Future<bool?> _confirmWebFallback(BuildContext context) =>
       showDialog<bool>(

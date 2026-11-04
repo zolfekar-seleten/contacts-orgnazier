@@ -5,6 +5,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/contact_avatar.dart';
 import '../../../core/widgets/grouped_list.dart';
 import '../../../core/widgets/whatsapp_icon.dart';
+import '../../local_time/presentation/local_time_widgets.dart';
 import '../domain/broadcast.dart';
 import 'broadcast_providers.dart';
 
@@ -209,6 +210,8 @@ class _CurrentCard extends StatelessWidget {
                         color: scheme.onSurfaceVariant,
                       ),
                     ),
+                    if (country != null)
+                      LocalTimeLabel(isoCode: country.isoCode),
                   ],
                 ),
               ),

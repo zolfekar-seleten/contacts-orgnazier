@@ -14,6 +14,7 @@ import '../../contacts/domain/app_contact.dart';
 import '../../contacts/domain/contacts_repository.dart';
 import '../../contacts/domain/phone_classification.dart';
 import '../../contacts/presentation/contacts_providers.dart';
+import '../../local_time/presentation/local_time_widgets.dart';
 
 class ContactDetailsScreen extends ConsumerWidget {
   const ContactDetailsScreen({super.key, required this.contactId});
@@ -349,6 +350,10 @@ class _PhoneRow extends ConsumerWidget {
                       ),
                     ],
                   ),
+                  if (country != null) ...[
+                    const SizedBox(height: 2),
+                    LocalTimeLabel(isoCode: country.isoCode),
+                  ],
                 ],
               ),
             ),
