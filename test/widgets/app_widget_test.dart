@@ -275,6 +275,55 @@ void main() {
     expect(find.byKey(const Key('details-whatsapp')), findsOneWidget);
   });
 
+  group('duplicates', () {
+    testWidgets('counts duplicated contacts and lists their groups', (
+      tester,
+    ) async {
+      await pumpApp(
+        tester,
+        repository: FakeContactsRepository(
+          contacts: [
+            ...sampleContacts,
+            contact('8', 'Olly B', ['07400 123456']),
+            contact('9', 'priya  sharma', ['+91 91234 56789']),
+          ],
+        ),
+      );
+
+      expect(
+        tester.widget<Text>(find.byKey(const Key('duplicates-count'))).data,
+        '4',
+      );
+      await tester.tap(find.byKey(const Key('open-duplicates')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Duplicates'), findsOneWidget);
+      expect(find.text('SAME PHONE NUMBER'), findsOneWidget);
+      expect(find.text('+44 7400 123456'), findsWidgets);
+      expect(find.text('Saved on 2 contacts'), findsOneWidget);
+      expect(find.text('SAME NAME'), findsOneWidget);
+      expect(find.text('2 contacts with this name'), findsOneWidget);
+
+      await tester.tap(find.text('Olly B'));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('details-edit')), findsOneWidget);
+    });
+
+    testWidgets('shows when there are no duplicates', (tester) async {
+      await pumpApp(tester);
+
+      expect(find.text('No duplicates found'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('open-duplicates')));
+      await tester.pumpAndSettle();
+      expect(
+        find.text(
+          'No two contacts share a phone number or have the same name.',
+        ),
+        findsOneWidget,
+      );
+    });
+  });
+
   group('editing', () {
     Future<FakeContactsRepository> openEmily(
       WidgetTester tester,
@@ -447,6 +496,8 @@ void main() {
         200,
         scrollable: mainScrollable,
       );
+      await tester.ensureVisible(find.text('Unknown'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Unknown'));
       await tester.pumpAndSettle();
 
@@ -561,6 +612,8 @@ void main() {
   group('find country', () {
     Future<void> openCountrySearch(WidgetTester tester) async {
       await pumpApp(tester);
+      await tester.ensureVisible(find.byKey(const Key('find-country')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('find-country')));
       await tester.pumpAndSettle();
       expect(find.text('Find a country'), findsOneWidget);

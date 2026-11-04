@@ -46,8 +46,23 @@ lib/
     contact_details/ details screen
     communication/ tel: / wa.me link building, CommunicationService,
                    number picker, message composer
+    duplicates/    contacts sharing a number or an identical name
     settings/      theme + default region (shared_preferences)
 ```
+
+## Duplicates
+
+The home screen counts contacts that appear more than once and lists them in
+groups:
+
+- **Same phone number**: numbers match on E.164, so `+44 7400 123456`,
+  `07400 123456` and `0044 7400 123456` are the same. Numbers with fewer than
+  6 digits (service codes) are ignored.
+- **Same name**: identical names, ignoring case and spacing. A name group with
+  the same contacts as a phone group is not shown twice.
+
+The app never merges or deletes anything: open a contact and tap **Edit** to
+fix it in the system Contacts app.
 
 ## App icon
 

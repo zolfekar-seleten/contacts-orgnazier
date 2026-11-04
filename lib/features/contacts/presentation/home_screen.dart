@@ -10,6 +10,8 @@ import '../../contact_search/presentation/search_providers.dart';
 import '../../countries/presentation/country_contacts_screen.dart';
 import '../../countries/presentation/country_search_screen.dart';
 import '../../countries/presentation/country_tile.dart';
+import '../../duplicates/presentation/duplicates_providers.dart';
+import '../../duplicates/presentation/duplicates_screen.dart';
 import '../../settings/presentation/settings_screen.dart';
 import '../domain/app_contact.dart';
 import '../domain/contact_directory.dart';
@@ -186,6 +188,10 @@ class _HomeContent extends ConsumerWidget {
                 child: _OverviewCard(directory: directory),
               ),
             ),
+            SliverPadding(
+              padding: padding.copyWith(top: 12),
+              sliver: const SliverToBoxAdapter(child: _DuplicatesCard()),
+            ),
             if (directory.countries.length > 1) ...[
               SliverPadding(
                 padding: padding,
@@ -255,6 +261,87 @@ class _HomeContent extends ConsumerWidget {
             const SliverToBoxAdapter(child: SizedBox(height: 48)),
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// Count of duplicated contacts; opens [DuplicatesScreen].
+class _DuplicatesCard extends ConsumerWidget {
+  const _DuplicatesCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final report = ref.watch(duplicatesProvider);
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final count = report.contactCount;
+    final groups = report.groups.length;
+    final accent = count == 0 ? scheme.secondary : scheme.error;
+    return Material(
+      color: theme.cardColor,
+      borderRadius: BorderRadius.circular(AppTheme.radius),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        key: const Key('open-duplicates'),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(builder: (_) => const DuplicatesScreen()),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: accent.withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  count == 0
+                      ? Icons.verified_rounded
+                      : Icons.content_copy_rounded,
+                  color: accent,
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Duplicated contacts',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      count == 0
+                          ? 'No duplicates found'
+                          : 'In $groups ${groups == 1 ? 'group' : 'groups'} '
+                                '· same number or name',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                '$count',
+                key: const Key('duplicates-count'),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: accent,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Icon(Icons.chevron_right_rounded, color: scheme.onSurfaceVariant),
+            ],
+          ),
+        ),
       ),
     );
   }
