@@ -102,17 +102,15 @@ class AppContact {
   final Set<String> countryKeys;
 
   String get initials {
-    final parts = displayName
-        .trim()
-        .split(RegExp(r'\s+'))
-        .where((p) => p.isNotEmpty)
-        .toList();
-    if (parts.isEmpty) return '#';
-    final first = String.fromCharCodes(parts.first.runes.take(1));
-    final last = parts.length > 1
-        ? String.fromCharCodes(parts.last.runes.take(1))
-        : '';
-    return (first + last).toUpperCase();
+    // First letter of the first and last name-like words, so "(Work)" gives
+    // "W" rather than "(".
+    final letters = [
+      for (final w in _words(displayName))
+        RegExp(r'\p{L}', unicode: true).firstMatch(w)!.group(0)!,
+    ];
+    if (letters.isEmpty) return '#';
+    return (letters.first + (letters.length > 1 ? letters.last : ''))
+        .toUpperCase();
   }
 
   /// The number to show in lists: a mobile number when there is one

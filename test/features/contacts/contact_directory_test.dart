@@ -104,6 +104,15 @@ void main() {
     expect(CountryGroup.unknownKey, 'ZZ');
   });
 
+  test('initials skip punctuation and number-only names', () {
+    final directory = ContactDirectory.build([
+      contact('1', 'Ahmed Karimi (Work)', ['+44 7400 123456']),
+      contact('2', '12345', ['12345']),
+    ], PhoneClassifier());
+    expect(directory.contactById('1')!.initials, 'AW');
+    expect(directory.contactById('2')!.initials, '#');
+  });
+
   test('precomputeClassifications seeds the cache from an isolate', () async {
     final classifier = PhoneClassifier();
     await precomputeClassifications(
