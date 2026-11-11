@@ -110,6 +110,8 @@ class _BroadcastComposeScreenState
     return Scaffold(
       appBar: AppBar(title: const Text('New message')),
       body: ListView(
+        // iOS keyboards have no dismiss key: scrolling hides it.
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: padding.copyWith(top: 4, bottom: 24),
         children: [
           _Label('To · ${contacts.length}'),
@@ -205,6 +207,9 @@ class _BroadcastComposeScreenState
             minLines: 4,
             maxLines: 8,
             textCapitalization: TextCapitalization.sentences,
+            // Flutter only does this for mouse taps by default; on phones a
+            // tap outside must close the keyboard too.
+            onTapOutside: (_) => _focus.unfocus(),
             decoration: const InputDecoration(hintText: 'Hi {first_name}, …'),
           ),
           const SizedBox(height: 10),
@@ -261,8 +266,15 @@ class _BroadcastComposeScreenState
             ),
         ],
       ),
+      // Scaffold leaves bottom bars behind the keyboard, so lift the send
+      // button above it.
       bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+        minimum: EdgeInsets.fromLTRB(
+          20,
+          8,
+          20,
+          12 + MediaQuery.viewInsetsOf(context).bottom,
+        ),
         child: ValueListenableBuilder(
           valueListenable: _controller,
           builder: (context, value, _) => FilledButton.icon(

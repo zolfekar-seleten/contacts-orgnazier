@@ -89,6 +89,7 @@ class _MessageComposerSheetState extends ConsumerState<MessageComposerSheet> {
         : (widget.phone.e164 ?? widget.phone.raw);
     // Scrolls when the keyboard or large text leaves too little room.
     return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       padding: EdgeInsets.only(
         left: 20,
         right: 20,
@@ -134,6 +135,8 @@ class _MessageComposerSheetState extends ConsumerState<MessageComposerSheet> {
             minLines: 3,
             maxLines: 6,
             textCapitalization: TextCapitalization.sentences,
+            // Phones get no tap-outside dismissal by default.
+            onTapOutside: (_) => FocusScope.of(context).unfocus(),
             decoration: const InputDecoration(hintText: 'Write a message…'),
           ),
           const SizedBox(height: 12),

@@ -246,5 +246,61 @@ void main() {
       await composeToAllUk(tester);
       expect(find.byKey(const Key('late-night-notice')), findsNothing);
     });
+
+    group('keyboard', () {
+      // An iPhone keyboard: 336pt tall at 3x.
+      const keyboard = 336.0;
+
+      Future<void> openKeyboard(WidgetTester tester) async {
+        await tester.tap(find.byKey(const Key('broadcast-field')));
+        tester.view.viewInsets = const FakeViewPadding(bottom: keyboard * 3);
+        await tester.pumpAndSettle();
+      }
+
+      bool fieldFocused(WidgetTester tester) => tester
+          .widget<EditableText>(
+            find.descendant(
+              of: find.byKey(const Key('broadcast-field')),
+              matching: find.byType(EditableText),
+            ),
+          )
+          .focusNode
+          .hasFocus;
+
+      testWidgets('the send button stays above the keyboard', (tester) async {
+        await composeToAllUk(tester);
+        await openKeyboard(tester);
+        await tester.enterText(find.byKey(const Key('broadcast-field')), 'Hi');
+        await tester.pump();
+
+        final screen = tester.view.physicalSize.height / 3;
+        final button = tester.getRect(find.byKey(const Key('review-send')));
+        expect(button.bottom, lessThanOrEqualTo(screen - keyboard));
+        await tester.tap(find.byKey(const Key('review-send')));
+        await tester.pumpAndSettle();
+        expect(find.text('Send via WhatsApp'), findsOneWidget);
+      });
+
+      testWidgets('tapping outside the message closes the keyboard', (
+        tester,
+      ) async {
+        await composeToAllUk(tester);
+        await openKeyboard(tester);
+        expect(fieldFocused(tester), isTrue);
+
+        await tester.tap(find.text('SEND WITH'));
+        await tester.pump();
+        expect(fieldFocused(tester), isFalse);
+      });
+
+      testWidgets('scrolling closes the keyboard', (tester) async {
+        await composeToAllUk(tester);
+        await openKeyboard(tester);
+
+        await tester.drag(find.text('SEND WITH'), const Offset(0, -200));
+        await tester.pump();
+        expect(fieldFocused(tester), isFalse);
+      });
+    });
   });
 }
