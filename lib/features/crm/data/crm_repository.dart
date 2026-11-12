@@ -108,6 +108,25 @@ class CrmRepository {
     return row.id;
   }
 
+  /// Inserts many leads or clients in one transaction (spreadsheet import).
+  Future<void> insertParties(List<PartiesCompanion> rows) => _db.batch((b) {
+    b.insertAll(_db.parties, [
+      for (final r in rows)
+        r.copyWith(createdAt: Value(_now()), updatedAt: Value(_now())),
+    ]);
+  });
+
+  /// Mobile numbers already saved, as E.164, for skipping duplicates.
+  Future<Set<String>> savedNumbers() async {
+    final rows = await (_db.select(
+      _db.parties,
+    )..where((p) => p.deletedAt.isNull() & p.mobile.isNotNull())).get();
+    return {
+      for (final p in rows)
+        if (p.dialCode != null) '+${p.dialCode}${p.mobile}',
+    };
+  }
+
   Future<void> updateParty(String id, PartiesCompanion data) =>
       (_db.update(_db.parties)..where((p) => p.id.equals(id))).write(
         data.copyWith(updatedAt: Value(_now())),

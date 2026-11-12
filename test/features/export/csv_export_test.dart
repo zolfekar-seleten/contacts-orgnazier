@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../support/fixtures.dart';
 
 List<String> lines(String csv) {
-  expect(csv.startsWith('﻿'), isTrue, reason: 'UTF-8 BOM for Excel');
+  expect(csv.startsWith('\uFEFF'), isTrue, reason: 'UTF-8 BOM for Excel');
   expect(csv.endsWith('\r\n'), isTrue);
   return csv.substring(1).split('\r\n')..removeLast();
 }

@@ -48,6 +48,7 @@ lib/
                    number picker, message composer
     duplicates/    contacts sharing a number or an identical name
     export/        CSV of selected contacts, shared via the OS share sheet
+    import/        Excel/CSV import of leads and clients with column detection
     local_time/    country → IANA time zones, local time, late-night warnings
     templates/     saved message templates (shared_preferences)
     crm/           leads, clients, lead statuses and deals (SQLite via drift)
@@ -111,6 +112,19 @@ plus a saved name). Notes are styled with `flutter_quill` and stored as
 Quill Delta JSON next to a plain-text copy for previews. Images are copied
 into the app's documents folder (`attachments/`, UUID file names) and listed
 in `ActivityAttachments`.
+
+### Excel / CSV import
+
+Leads and Clients have an **Import** button (`.xlsx`, `.csv`; old `.xls`
+gets a message to re-save). `detectLayout` finds the header row (or none)
+and guesses each column from English/Arabic header synonyms first, then
+from the values: phone-like, calling codes, countries vs nationality words
+(`CountryMatcher`: names, ISO codes, UAE/KSA/UK, demonyms, Arabic), names,
+and small sets of repeated words as statuses. The user can change any
+column before importing. `planImport` builds the rows: first + last names
+are joined, numbers like `971501234567` (saved without `+`) or `00…` are
+split, local numbers use the default region, and people already saved or
+repeated in the file are skipped. Unknown statuses are created.
 
 Schema changes: edit `lib/features/crm/data/crm_database.dart`, bump
 `schemaVersion`, add a migration, then run

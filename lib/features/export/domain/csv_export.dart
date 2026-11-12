@@ -30,7 +30,7 @@ String contactsToCsv(List<AppContact> contacts, {String? countryKey}) {
           p.country?.formattedDialCode ?? '',
         ],
   ];
-  return '﻿${rows.map((r) => r.map(_cell).join(',')).join('\r\n')}\r\n';
+  return '\uFEFF${rows.map((r) => r.map(_cell).join(',')).join('\r\n')}\r\n';
 }
 
 /// `Contacts Organizer - United Kingdom - 2026-11-04.csv`

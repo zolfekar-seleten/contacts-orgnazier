@@ -6,6 +6,7 @@ import '../../../core/widgets/grouped_list.dart';
 import '../../../core/widgets/search_field.dart';
 import '../../../core/widgets/state_view.dart';
 import '../../contact_search/presentation/search_providers.dart';
+import '../../import/presentation/import_screen.dart';
 import '../data/crm_database.dart';
 import '../domain/party_phone.dart';
 import 'crm_providers.dart';
@@ -33,6 +34,14 @@ class PartyListScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(_leads ? 'Leads' : 'Clients'),
         actions: [
+          IconButton(
+            key: Key('import-$noun'),
+            tooltip: 'Import from Excel',
+            icon: const Icon(Icons.upload_file_rounded),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(builder: (_) => ImportScreen(kind: kind)),
+            ),
+          ),
           if (_leads)
             IconButton(
               key: const Key('manage-statuses'),
