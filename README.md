@@ -54,6 +54,7 @@ lib/
     crm/           leads, clients, lead statuses and deals (SQLite via drift)
     shell/         bottom tab bar: Contacts · Leads · Clients · Activities
     settings/      theme + default region (shared_preferences)
+    sync/          iCloud backups (daily, restore) and sync between devices
 ```
 
 ## Duplicates
@@ -129,6 +130,30 @@ repeated in the file are skipped. Unknown statuses are created.
 Schema changes: edit `lib/features/crm/data/crm_database.dart`, bump
 `schemaVersion`, add a migration, then run
 `dart run build_runner build`.
+
+## iCloud backup and sync
+
+Uses the app's iCloud Drive container `iCloud.com.pbs.countryContact`
+(entitlements in `ios/Runner/Runner.entitlements`; a small Swift bridge in
+`AppDelegate.swift`, channel `contacts_organizer/icloud`).
+
+- **Backups**: `Documents/Backups/Contacts Organizer <date>.zip` with
+  `data.json` (every row of every table, including soft-deleted ones) and the
+  activity images. Made daily on launch/resume when due, or with *Back up
+  now*; the newest 14 are kept. Visible in Files › iCloud Drive › Contacts
+  Organizer. *Restore* replaces this device's data with a backup.
+- **Sync**: each device writes only `Sync/device-<id>.json` and merges the
+  other devices' files row by row, newest `updatedAt` wins (deletes are
+  edits), so devices never overwrite each other. Images go to
+  `Sync/attachments/`. Runs on launch/resume, ~20 s after local edits, or
+  with *Sync now*.
+- Settings › iCloud shows status, toggles and last backup/sync times.
+  iCloud is iOS-only; Android shows it as unavailable.
+
+**One-time Xcode setup:** Runner target › Signing & Capabilities › iCloud:
+make sure *iCloud Documents* is on and the container
+`iCloud.com.pbs.countryContact` is ticked (press + to create it if it shows
+red), so the provisioning profile includes it.
 
 ## App icon
 

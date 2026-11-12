@@ -5,6 +5,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/grouped_list.dart';
 import '../../contacts/presentation/contacts_providers.dart';
 import '../../countries/domain/country.dart';
+import '../../sync/presentation/cloud_screen.dart';
 import '../domain/app_settings.dart';
 import 'region_picker_screen.dart';
 import 'settings_providers.dart';
@@ -55,6 +56,21 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: contentPadding(context).copyWith(bottom: 32),
         children: [
+          const SectionHeader('Backup & sync'),
+          GroupedListItem(
+            index: 0,
+            count: 1,
+            child: ListTile(
+              key: const Key('open-icloud'),
+              leading: const Icon(Icons.cloud_outlined),
+              title: const Text('iCloud'),
+              subtitle: const Text('Daily backup, restore and sync'),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(builder: (_) => const CloudScreen()),
+              ),
+            ),
+          ),
           const SectionHeader('Appearance'),
           SegmentedButton<ThemeMode>(
             segments: const [

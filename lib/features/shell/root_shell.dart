@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../contacts/presentation/home_screen.dart';
 import '../crm/data/crm_database.dart';
 import '../crm/presentation/activities_screen.dart';
 import '../crm/presentation/party_list_screen.dart';
+import '../sync/presentation/cloud_providers.dart';
 
 /// Bottom tab bar: Contacts, Leads, Clients and Activities. Each tab is
 /// built the first time it is opened and then kept alive, so switching
 /// keeps scroll positions and the database only opens when needed.
-class RootShell extends StatefulWidget {
+class RootShell extends ConsumerStatefulWidget {
   const RootShell({super.key});
 
   @override
-  State<RootShell> createState() => _RootShellState();
+  ConsumerState<RootShell> createState() => _RootShellState();
 }
 
-class _RootShellState extends State<RootShell> {
+class _RootShellState extends ConsumerState<RootShell> {
   int _index = 0;
   final _visited = <int>{0};
+
+  @override
+  void initState() {
+    super.initState();
+    // Sync and the daily iCloud backup run on launch and on resume.
+    Future.microtask(() => ref.read(cloudControllerProvider.notifier).start());
+  }
 
   static const _tabs = [
     (Icons.contacts_outlined, Icons.contacts_rounded, 'Contacts'),
