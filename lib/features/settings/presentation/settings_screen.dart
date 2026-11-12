@@ -5,6 +5,7 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/widgets/grouped_list.dart';
 import '../../contacts/presentation/contacts_providers.dart';
 import '../../countries/domain/country.dart';
+import '../../crm/presentation/sample_data_controls.dart';
 import '../../sync/presentation/cloud_screen.dart';
 import '../domain/app_settings.dart';
 import 'region_picker_screen.dart';
@@ -71,6 +72,8 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
           ),
+          const SectionHeader('Sample data'),
+          const GroupedListItem(index: 0, count: 1, child: SampleDataTile()),
           const SectionHeader('Appearance'),
           SegmentedButton<ThemeMode>(
             segments: const [

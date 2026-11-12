@@ -13,6 +13,7 @@ import 'crm_providers.dart';
 import 'crm_widgets.dart';
 import 'party_detail_screen.dart';
 import 'party_form_screen.dart';
+import 'sample_data_controls.dart';
 import 'status_manager_screen.dart';
 
 /// The Leads or Clients tab.
@@ -100,6 +101,8 @@ class PartyListScreen extends ConsumerWidget {
                             : 'Convert a lead, or add a client directly, '
                                   'to keep track of what they bought or '
                                   'rented.',
+                        secondaryLabel: 'Try with sample data',
+                        onSecondary: () => addSampleData(context, ref),
                       )
                     : const StateView(
                         icon: Icons.search_off_rounded,

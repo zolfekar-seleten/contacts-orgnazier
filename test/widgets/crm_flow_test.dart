@@ -186,6 +186,21 @@ void main() {
     expect(find.text('No leads yet'), findsOneWidget);
   });
 
+  crmTest('empty Leads offers sample data', (tester) async {
+    await pumpApp(tester);
+    await openTab(tester, 'leads');
+    await tester.tap(find.text('Try with sample data'));
+    for (var i = 0; i < 6; i++) {
+      await settle(tester);
+    }
+    expect(
+      find.text('Added 40 leads, 18 clients and 30 activities.'),
+      findsOneWidget,
+    );
+    expect(find.text('All 40'), findsOneWidget);
+    expect(find.text('No leads yet'), findsNothing);
+  });
+
   crmTest('a name is required', (tester) async {
     await pumpApp(tester);
     await openTab(tester, 'leads');
