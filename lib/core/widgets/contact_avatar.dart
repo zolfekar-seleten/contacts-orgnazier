@@ -65,8 +65,27 @@ class ContactAvatar extends StatelessWidget {
     );
   }
 
-  Widget _initials() {
-    final colors = _gradients[contact.id.hashCode.abs() % _gradients.length];
+  Widget _initials() =>
+      InitialsAvatar(seed: contact.id, initials: contact.initials, size: size);
+}
+
+/// Gradient circle with initials; the colour is stable per [seed].
+class InitialsAvatar extends StatelessWidget {
+  const InitialsAvatar({
+    super.key,
+    required this.seed,
+    required this.initials,
+    this.size = 44,
+  });
+
+  final String seed;
+  final String initials;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    const gradients = ContactAvatar._gradients;
+    final colors = gradients[seed.hashCode.abs() % gradients.length];
     return Container(
       width: size,
       height: size,
@@ -80,7 +99,7 @@ class ContactAvatar extends StatelessWidget {
         ),
       ),
       child: Text(
-        contact.initials,
+        initials,
         style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.w700,

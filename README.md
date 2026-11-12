@@ -50,6 +50,8 @@ lib/
     export/        CSV of selected contacts, shared via the OS share sheet
     local_time/    country → IANA time zones, local time, late-night warnings
     templates/     saved message templates (shared_preferences)
+    crm/           leads, clients, lead statuses and deals (SQLite via drift)
+    shell/         bottom tab bar: Contacts · Leads · Clients
     settings/      theme + default region (shared_preferences)
 ```
 
@@ -84,6 +86,25 @@ fix it in the system Contacts app.
   calling or messaging, and the bulk composer notes how many recipients it's
   late for. `lib/features/local_time/domain/country_time_zones.dart` is
   generated from the tz database's `zone.tab`.
+
+## Leads and clients
+
+A personal lead manager next to the contact organizer, stored in a local
+SQLite database (`drift`, file `contacts_organizer.sqlite`).
+
+- **Leads** and **clients** share one table (`Parties`): name, mobile
+  (calling code + national number), nationality, country, source and sub
+  source. Converting a lead to a client keeps everything and records when.
+- **Lead statuses** are user-editable (add, rename, recolour, reorder,
+  delete with reassignment); new installs start with Cold and Hot.
+- **Deals**: what a client bought or rented, when and where (many per
+  client).
+- Every table uses UUID keys, `updatedAt` and soft deletes (`deletedAt`) so
+  iCloud sync can merge devices later.
+
+Schema changes: edit `lib/features/crm/data/crm_database.dart`, bump
+`schemaVersion`, add a migration, then run
+`dart run build_runner build`.
 
 ## App icon
 

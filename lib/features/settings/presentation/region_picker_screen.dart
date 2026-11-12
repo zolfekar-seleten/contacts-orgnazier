@@ -25,14 +25,16 @@ final _regionResultsProvider = Provider.autoDispose<List<Country>>((ref) {
 
 /// Searchable list of all regions. Pops with the chosen [Country].
 class RegionPickerScreen extends ConsumerWidget {
-  const RegionPickerScreen({super.key});
+  const RegionPickerScreen({super.key, this.title = 'Choose region'});
+
+  final String title;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final countries = ref.watch(_regionResultsProvider);
     final padding = contentPadding(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Choose region')),
+      appBar: AppBar(title: Text(title)),
       body: Column(
         children: [
           Padding(

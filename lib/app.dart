@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme/app_theme.dart';
-import 'features/contacts/presentation/home_screen.dart';
 import 'features/settings/presentation/settings_providers.dart';
+import 'features/shell/root_shell.dart';
 
 class CountryContactsApp extends ConsumerWidget {
   const CountryContactsApp({super.key});
@@ -16,7 +16,7 @@ class CountryContactsApp extends ConsumerWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: ref.watch(themeModeProvider),
-      home: const HomeScreen(),
+      home: const RootShell(),
     );
   }
 }

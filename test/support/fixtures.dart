@@ -6,7 +6,10 @@ import 'package:country_contacts/features/communication/presentation/communicati
 import 'package:country_contacts/features/contacts/domain/contacts_repository.dart';
 import 'package:country_contacts/features/contacts/domain/device_contact.dart';
 import 'package:country_contacts/features/contacts/presentation/contacts_providers.dart';
+import 'package:country_contacts/features/crm/data/crm_database.dart';
+import 'package:country_contacts/features/crm/presentation/crm_providers.dart';
 import 'package:country_contacts/features/settings/presentation/settings_providers.dart';
+import 'package:drift/native.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -111,6 +114,12 @@ Future<List<Override>> testOverrides({
     deviceRegionProvider.overrideWithValue(deviceRegion),
     contactsRepositoryProvider.overrideWithValue(repository),
     clockProvider.overrideWithValue(() => now ?? middayUtc),
+    // In-memory SQLite, opened only if a test visits Leads or Clients.
+    crmDatabaseProvider.overrideWith((ref) {
+      final db = CrmDatabase(NativeDatabase.memory());
+      ref.onDispose(db.close);
+      return db;
+    }),
     if (launcher != null) urlLauncherProvider.overrideWithValue(launcher),
   ];
 }

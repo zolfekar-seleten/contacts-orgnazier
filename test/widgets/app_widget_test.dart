@@ -243,6 +243,8 @@ void main() {
       200,
       scrollable: mainScrollable,
     );
+    await tester.ensureVisible(inCountryList('United States'));
+    await tester.pumpAndSettle();
     await tester.tap(inCountryList('United States'));
     await tester.pumpAndSettle();
 
@@ -614,6 +616,12 @@ void main() {
   group('find country', () {
     Future<void> openCountrySearch(WidgetTester tester) async {
       await pumpApp(tester);
+      // Below the fold above the tab bar, so it is built only once scrolled to.
+      await tester.scrollUntilVisible(
+        find.byKey(const Key('find-country')),
+        200,
+        scrollable: mainScrollable,
+      );
       await tester.ensureVisible(find.byKey(const Key('find-country')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('find-country')));
