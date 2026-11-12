@@ -45,8 +45,41 @@ void main() {
     }
     final acts = await activities.watchActivities().first;
     expect(acts, hasLength(30));
-    expect(acts.any((a) => a.completedAt != null), isTrue);
+    final today = DateTime(now.year, now.month, now.day);
+    bool open(a) => a.completedAt == null;
+    expect(acts.any((a) => a.completedAt != null), isTrue, reason: 'done');
+    expect(
+      acts.any((a) => open(a) && a.dueAt != null && a.dueAt!.isBefore(today)),
+      isTrue,
+      reason: 'overdue',
+    );
+    expect(
+      acts.any(
+        (a) =>
+            open(a) &&
+            a.dueAt != null &&
+            !a.dueAt!.isBefore(today) &&
+            a.dueAt!.isBefore(today.add(const Duration(days: 1))),
+      ),
+      isTrue,
+      reason: 'today',
+    );
     expect(acts.any((a) => a.dueAt?.isAfter(now) ?? false), isTrue);
+    // General titles only on activities without a person.
+    for (final a in acts.where((a) => a.partyId != null)) {
+      expect(
+        a.title,
+        isNot(
+          anyOf(
+            'Team pipeline review',
+            'Lunch with developer sales team',
+            'Newsletter to past clients',
+            'Update Property Finder listings',
+            'Call about the Marina listing',
+          ),
+        ),
+      );
+    }
   });
 
   test('every number is a valid, unique mobile with full details', () async {

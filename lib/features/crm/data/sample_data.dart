@@ -148,11 +148,17 @@ class SampleData {
       final type = pick(_activityTypes);
       final partyId = rnd.nextDouble() < 0.85 ? pick(people) : null;
       final who = partyId == null ? null : names[partyId]!.split(' ').first;
-      final dayOffset = -6 + rnd.nextInt(18); // a week back to ~12 days ahead
+      // Always show every group: a few overdue, a few today, then a spread
+      // from a week back (mostly done) to about twelve days ahead.
+      final dayOffset = i < 3
+          ? -1 - i
+          : i < 7
+          ? 0
+          : -6 + rnd.nextInt(18);
       final due = DateTime(now.year, now.month, now.day + dayOffset).add(
         Duration(hours: 9 + rnd.nextInt(9), minutes: pick([0, 15, 30, 45])),
       );
-      final done = dayOffset < 0 ? rnd.nextDouble() < 0.6 : false;
+      final done = i >= 7 && dayOffset < 0 && rnd.nextDouble() < 0.6;
       final note = pick(_notes);
       final id = await activities.createActivity(
         ActivitiesCompanion.insert(
@@ -199,34 +205,32 @@ class SampleData {
     await _prefs.remove(_key);
   }
 
+  /// Person-specific titles when there is someone, general ones otherwise.
   static String _title(ActivityType type, String? who, Random rnd) {
-    final w = who ?? '';
-    final options = switch (type) {
-      ActivityType.call => [
-        if (who != null) 'Call $w back',
-        if (who != null) 'Follow-up call with $w',
-        'Call about the Marina listing',
-      ],
-      ActivityType.meeting => [
-        if (who != null) 'Viewing with $w',
-        if (who != null) 'Meeting with $w at the office',
-        'Team pipeline review',
-      ],
-      ActivityType.task => [
-        if (who != null) 'Prepare offer for $w',
-        'Update Property Finder listings',
-        if (who != null) 'Send contract draft to $w',
-      ],
-      ActivityType.email => [
-        if (who != null) 'Email brochure to $w',
-        if (who != null) 'Send payment plan to $w',
-        'Newsletter to past clients',
-      ],
-      ActivityType.lunch => [
-        if (who != null) 'Lunch with $w',
-        'Lunch with developer sales team',
-      ],
-    };
+    final options = who != null
+        ? switch (type) {
+            ActivityType.call => ['Call $who back', 'Follow-up call with $who'],
+            ActivityType.meeting => [
+              'Viewing with $who',
+              'Meeting with $who at the office',
+            ],
+            ActivityType.task => [
+              'Prepare offer for $who',
+              'Send contract draft to $who',
+            ],
+            ActivityType.email => [
+              'Email brochure to $who',
+              'Send payment plan to $who',
+            ],
+            ActivityType.lunch => ['Lunch with $who'],
+          }
+        : switch (type) {
+            ActivityType.call => ['Call about the Marina listing'],
+            ActivityType.meeting => ['Team pipeline review'],
+            ActivityType.task => ['Update Property Finder listings'],
+            ActivityType.email => ['Newsletter to past clients'],
+            ActivityType.lunch => ['Lunch with developer sales team'],
+          };
     return options[rnd.nextInt(options.length)];
   }
 }
