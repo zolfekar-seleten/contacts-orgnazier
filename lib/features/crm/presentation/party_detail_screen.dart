@@ -13,6 +13,7 @@ import '../../communication/presentation/communication_providers.dart';
 import '../../local_time/presentation/local_time_widgets.dart';
 import '../data/crm_database.dart';
 import '../domain/party_phone.dart';
+import 'activities_screen.dart';
 import 'crm_providers.dart';
 import 'crm_widgets.dart';
 import 'deal_form_sheet.dart';
@@ -151,6 +152,7 @@ class PartyDetailScreen extends ConsumerWidget {
           const SectionHeader('Details'),
           ..._details(context, party),
           if (!lead) _Deals(partyId: party.id),
+          PartyActivities(party: party),
         ],
       ),
     );

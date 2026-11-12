@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart' show DefaultCupertinoLocalizations;
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart'
+    show FlutterQuillLocalizations;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme/app_theme.dart';
@@ -16,6 +19,13 @@ class CountryContactsApp extends ConsumerWidget {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: ref.watch(themeModeProvider),
+      // The note editor (flutter_quill) needs its own strings.
+      localizationsDelegates: const [
+        DefaultMaterialLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+        FlutterQuillLocalizations.delegate,
+      ],
       home: const RootShell(),
     );
   }

@@ -37,8 +37,12 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Contacts Organizer uses the camera to take photos for your activity notes. They stay on this device.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Contacts Organizer reads your contacts' phone numbers to group them by country. Everything stays on this device and your contacts are never changed.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Contacts Organizer attaches the photos you choose to your activity notes. They stay on this device.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

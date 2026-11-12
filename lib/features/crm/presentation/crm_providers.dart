@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/clock.dart';
 import '../../contact_search/presentation/search_providers.dart';
+import '../data/activity_repository.dart';
+import '../data/attachment_store.dart';
 import '../data/crm_database.dart';
 import '../data/crm_repository.dart';
 
@@ -89,3 +91,48 @@ bool matchesPartyQuery(Party p, String query) {
       (p.source?.toLowerCase().contains(query) ?? false) ||
       (p.subSource?.toLowerCase().contains(query) ?? false);
 }
+
+// Activities ---------------------------------------------------------------
+
+final activityRepositoryProvider = Provider(
+  (ref) => ActivityRepository(
+    ref.watch(crmDatabaseProvider),
+    clock: ref.watch(clockProvider),
+  ),
+);
+
+/// Overridden in tests with a temporary folder.
+final attachmentStoreProvider = Provider((ref) => AttachmentStore());
+
+final imageSourceProvider = Provider<ImageSourceGateway>(
+  (ref) => ImagePickerGateway(),
+);
+
+/// All activities, or one lead's or client's when given a party id.
+final activitiesProvider = StreamProvider.family<List<Activity>, String?>(
+  (ref, partyId) =>
+      ref.watch(activityRepositoryProvider).watchActivities(partyId: partyId),
+);
+
+final activityProvider = StreamProvider.autoDispose.family<Activity?, String>(
+  (ref, id) => ref.watch(activityRepositoryProvider).watchActivity(id),
+);
+
+final attachmentCountsProvider = StreamProvider<Map<String, int>>(
+  (ref) => ref.watch(activityRepositoryProvider).watchAttachmentCounts(),
+);
+
+final attachmentsProvider = StreamProvider.autoDispose
+    .family<List<ActivityAttachment>, String>(
+      (ref, id) => ref.watch(activityRepositoryProvider).watchAttachments(id),
+    );
+
+/// Every lead and client by id, for showing who an activity is with.
+final partiesByIdProvider = Provider<Map<String, Party>>((ref) {
+  final leads = ref.watch(partiesProvider(PartyKind.lead)).value ?? const [];
+  final clients =
+      ref.watch(partiesProvider(PartyKind.client)).value ?? const [];
+  return {
+    for (final p in [...leads, ...clients]) p.id: p,
+  };
+});

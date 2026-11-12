@@ -18,6 +18,26 @@ enum DealType {
   final String label;
 }
 
+enum ActivityType {
+  call('Call'),
+  meeting('Meeting'),
+  task('Task'),
+  email('Email'),
+  lunch('Lunch');
+
+  const ActivityType(this.label);
+  final String label;
+}
+
+enum ActivityPriority {
+  high('High'),
+  medium('Medium'),
+  low('Low');
+
+  const ActivityPriority(this.label);
+  final String label;
+}
+
 /// Columns every synced table shares. UUID keys, edit times and soft
 /// deletes let records from several devices be merged later (iCloud sync).
 mixin SyncedTable on Table {
@@ -83,7 +103,42 @@ class Deals extends Table with SyncedTable {
   TextColumn get notes => text().nullable()();
 }
 
-@DriftDatabase(tables: [LeadStatuses, Parties, Deals])
+/// A call, meeting, task, email or lunch, optionally with a lead, client
+/// or phone contact.
+@DataClassName('Activity')
+class Activities extends Table with SyncedTable {
+  IntColumn get type => intEnum<ActivityType>()();
+  IntColumn get priority => intEnum<ActivityPriority>()();
+  TextColumn get title => text()();
+
+  /// Styled note as Quill Delta JSON, and its plain text for search and
+  /// previews.
+  TextColumn get noteJson => text().nullable()();
+  TextColumn get notePlain => text().nullable()();
+
+  DateTimeColumn get dueAt => dateTime().nullable()();
+  DateTimeColumn get completedAt => dateTime().nullable()();
+
+  /// With a lead or client…
+  TextColumn get partyId => text().nullable().references(Parties, #id)();
+
+  /// …or a phone contact. The name is kept in case the contact changes.
+  TextColumn get contactId => text().nullable()();
+  TextColumn get contactName => text().nullable()();
+}
+
+/// Images attached to an activity, stored as files in the app's documents.
+@DataClassName('ActivityAttachment')
+class ActivityAttachments extends Table with SyncedTable {
+  TextColumn get activityId => text().references(Activities, #id)();
+
+  /// File name inside the attachments folder.
+  TextColumn get fileName => text()();
+}
+
+@DriftDatabase(
+  tables: [LeadStatuses, Parties, Deals, Activities, ActivityAttachments],
+)
 class CrmDatabase extends _$CrmDatabase {
   CrmDatabase(super.executor);
 
@@ -94,7 +149,7 @@ class CrmDatabase extends _$CrmDatabase {
   static const starterStatuses = [('Cold', 0xFF3D8BF5), ('Hot', 0xFFF0544F)];
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -104,6 +159,12 @@ class CrmDatabase extends _$CrmDatabase {
         await into(leadStatuses).insert(
           LeadStatusesCompanion.insert(name: name, color: color, position: i),
         );
+      }
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(activities);
+        await m.createTable(activityAttachments);
       }
     },
     beforeOpen: (details) async {

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../contacts/presentation/home_screen.dart';
 import '../crm/data/crm_database.dart';
+import '../crm/presentation/activities_screen.dart';
 import '../crm/presentation/party_list_screen.dart';
 
-/// Bottom tab bar: Contacts, Leads and Clients. Each tab is built the first
-/// time it is opened and then kept alive, so switching keeps scroll
-/// positions and the database only opens when needed.
+/// Bottom tab bar: Contacts, Leads, Clients and Activities. Each tab is
+/// built the first time it is opened and then kept alive, so switching
+/// keeps scroll positions and the database only opens when needed.
 class RootShell extends StatefulWidget {
   const RootShell({super.key});
 
@@ -22,12 +23,14 @@ class _RootShellState extends State<RootShell> {
     (Icons.contacts_outlined, Icons.contacts_rounded, 'Contacts'),
     (Icons.trending_up_rounded, Icons.trending_up_rounded, 'Leads'),
     (Icons.handshake_outlined, Icons.handshake_rounded, 'Clients'),
+    (Icons.event_note_outlined, Icons.event_note_rounded, 'Activities'),
   ];
 
   Widget _page(int i) => switch (i) {
     0 => const HomeScreen(),
     1 => const PartyListScreen(kind: PartyKind.lead),
-    _ => const PartyListScreen(kind: PartyKind.client),
+    2 => const PartyListScreen(kind: PartyKind.client),
+    _ => const ActivitiesScreen(),
   };
 
   @override

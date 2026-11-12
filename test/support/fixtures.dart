@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:country_contacts/core/clock.dart';
 import 'package:country_contacts/features/communication/domain/communication_service.dart';
@@ -6,6 +7,7 @@ import 'package:country_contacts/features/communication/presentation/communicati
 import 'package:country_contacts/features/contacts/domain/contacts_repository.dart';
 import 'package:country_contacts/features/contacts/domain/device_contact.dart';
 import 'package:country_contacts/features/contacts/presentation/contacts_providers.dart';
+import 'package:country_contacts/features/crm/data/attachment_store.dart';
 import 'package:country_contacts/features/crm/data/crm_database.dart';
 import 'package:country_contacts/features/crm/presentation/crm_providers.dart';
 import 'package:country_contacts/features/settings/presentation/settings_providers.dart';
@@ -114,6 +116,10 @@ Future<List<Override>> testOverrides({
     deviceRegionProvider.overrideWithValue(deviceRegion),
     contactsRepositoryProvider.overrideWithValue(repository),
     clockProvider.overrideWithValue(() => now ?? middayUtc),
+    // Activity images go to a throwaway folder.
+    attachmentStoreProvider.overrideWithValue(
+      AttachmentStore(root: () => Directory.systemTemp.createTemp('att')),
+    ),
     // In-memory SQLite, opened only if a test visits Leads or Clients.
     crmDatabaseProvider.overrideWith((ref) {
       final db = CrmDatabase(NativeDatabase.memory());

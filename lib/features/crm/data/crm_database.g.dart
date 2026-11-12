@@ -1883,12 +1883,1257 @@ class DealsCompanion extends UpdateCompanion<Deal> {
   }
 }
 
+class $ActivitiesTable extends Activities
+    with TableInfo<$ActivitiesTable, Activity> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ActivitiesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid.v4(),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<ActivityType, int> type =
+      GeneratedColumn<int>(
+        'type',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<ActivityType>($ActivitiesTable.$convertertype);
+  @override
+  late final GeneratedColumnWithTypeConverter<ActivityPriority, int> priority =
+      GeneratedColumn<int>(
+        'priority',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<ActivityPriority>($ActivitiesTable.$converterpriority);
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _noteJsonMeta = const VerificationMeta(
+    'noteJson',
+  );
+  @override
+  late final GeneratedColumn<String> noteJson = GeneratedColumn<String>(
+    'note_json',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _notePlainMeta = const VerificationMeta(
+    'notePlain',
+  );
+  @override
+  late final GeneratedColumn<String> notePlain = GeneratedColumn<String>(
+    'note_plain',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dueAtMeta = const VerificationMeta('dueAt');
+  @override
+  late final GeneratedColumn<DateTime> dueAt = GeneratedColumn<DateTime>(
+    'due_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _completedAtMeta = const VerificationMeta(
+    'completedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
+    'completed_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _partyIdMeta = const VerificationMeta(
+    'partyId',
+  );
+  @override
+  late final GeneratedColumn<String> partyId = GeneratedColumn<String>(
+    'party_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES parties (id)',
+    ),
+  );
+  static const VerificationMeta _contactIdMeta = const VerificationMeta(
+    'contactId',
+  );
+  @override
+  late final GeneratedColumn<String> contactId = GeneratedColumn<String>(
+    'contact_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _contactNameMeta = const VerificationMeta(
+    'contactName',
+  );
+  @override
+  late final GeneratedColumn<String> contactName = GeneratedColumn<String>(
+    'contact_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    type,
+    priority,
+    title,
+    noteJson,
+    notePlain,
+    dueAt,
+    completedAt,
+    partyId,
+    contactId,
+    contactName,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'activities';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Activity> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('note_json')) {
+      context.handle(
+        _noteJsonMeta,
+        noteJson.isAcceptableOrUnknown(data['note_json']!, _noteJsonMeta),
+      );
+    }
+    if (data.containsKey('note_plain')) {
+      context.handle(
+        _notePlainMeta,
+        notePlain.isAcceptableOrUnknown(data['note_plain']!, _notePlainMeta),
+      );
+    }
+    if (data.containsKey('due_at')) {
+      context.handle(
+        _dueAtMeta,
+        dueAt.isAcceptableOrUnknown(data['due_at']!, _dueAtMeta),
+      );
+    }
+    if (data.containsKey('completed_at')) {
+      context.handle(
+        _completedAtMeta,
+        completedAt.isAcceptableOrUnknown(
+          data['completed_at']!,
+          _completedAtMeta,
+        ),
+      );
+    }
+    if (data.containsKey('party_id')) {
+      context.handle(
+        _partyIdMeta,
+        partyId.isAcceptableOrUnknown(data['party_id']!, _partyIdMeta),
+      );
+    }
+    if (data.containsKey('contact_id')) {
+      context.handle(
+        _contactIdMeta,
+        contactId.isAcceptableOrUnknown(data['contact_id']!, _contactIdMeta),
+      );
+    }
+    if (data.containsKey('contact_name')) {
+      context.handle(
+        _contactNameMeta,
+        contactName.isAcceptableOrUnknown(
+          data['contact_name']!,
+          _contactNameMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Activity map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Activity(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      type: $ActivitiesTable.$convertertype.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}type'],
+        )!,
+      ),
+      priority: $ActivitiesTable.$converterpriority.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}priority'],
+        )!,
+      ),
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      noteJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note_json'],
+      ),
+      notePlain: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note_plain'],
+      ),
+      dueAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}due_at'],
+      ),
+      completedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}completed_at'],
+      ),
+      partyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}party_id'],
+      ),
+      contactId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}contact_id'],
+      ),
+      contactName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}contact_name'],
+      ),
+    );
+  }
+
+  @override
+  $ActivitiesTable createAlias(String alias) {
+    return $ActivitiesTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<ActivityType, int, int> $convertertype =
+      const EnumIndexConverter<ActivityType>(ActivityType.values);
+  static JsonTypeConverter2<ActivityPriority, int, int> $converterpriority =
+      const EnumIndexConverter<ActivityPriority>(ActivityPriority.values);
+}
+
+class Activity extends DataClass implements Insertable<Activity> {
+  final String id;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  /// Set instead of deleting the row, so the deletion can sync too.
+  final DateTime? deletedAt;
+  final ActivityType type;
+  final ActivityPriority priority;
+  final String title;
+
+  /// Styled note as Quill Delta JSON, and its plain text for search and
+  /// previews.
+  final String? noteJson;
+  final String? notePlain;
+  final DateTime? dueAt;
+  final DateTime? completedAt;
+
+  /// With a lead or client…
+  final String? partyId;
+
+  /// …or a phone contact. The name is kept in case the contact changes.
+  final String? contactId;
+  final String? contactName;
+  const Activity({
+    required this.id,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.type,
+    required this.priority,
+    required this.title,
+    this.noteJson,
+    this.notePlain,
+    this.dueAt,
+    this.completedAt,
+    this.partyId,
+    this.contactId,
+    this.contactName,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    {
+      map['type'] = Variable<int>($ActivitiesTable.$convertertype.toSql(type));
+    }
+    {
+      map['priority'] = Variable<int>(
+        $ActivitiesTable.$converterpriority.toSql(priority),
+      );
+    }
+    map['title'] = Variable<String>(title);
+    if (!nullToAbsent || noteJson != null) {
+      map['note_json'] = Variable<String>(noteJson);
+    }
+    if (!nullToAbsent || notePlain != null) {
+      map['note_plain'] = Variable<String>(notePlain);
+    }
+    if (!nullToAbsent || dueAt != null) {
+      map['due_at'] = Variable<DateTime>(dueAt);
+    }
+    if (!nullToAbsent || completedAt != null) {
+      map['completed_at'] = Variable<DateTime>(completedAt);
+    }
+    if (!nullToAbsent || partyId != null) {
+      map['party_id'] = Variable<String>(partyId);
+    }
+    if (!nullToAbsent || contactId != null) {
+      map['contact_id'] = Variable<String>(contactId);
+    }
+    if (!nullToAbsent || contactName != null) {
+      map['contact_name'] = Variable<String>(contactName);
+    }
+    return map;
+  }
+
+  ActivitiesCompanion toCompanion(bool nullToAbsent) {
+    return ActivitiesCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      type: Value(type),
+      priority: Value(priority),
+      title: Value(title),
+      noteJson: noteJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(noteJson),
+      notePlain: notePlain == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notePlain),
+      dueAt: dueAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dueAt),
+      completedAt: completedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(completedAt),
+      partyId: partyId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(partyId),
+      contactId: contactId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contactId),
+      contactName: contactName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(contactName),
+    );
+  }
+
+  factory Activity.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Activity(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      type: $ActivitiesTable.$convertertype.fromJson(
+        serializer.fromJson<int>(json['type']),
+      ),
+      priority: $ActivitiesTable.$converterpriority.fromJson(
+        serializer.fromJson<int>(json['priority']),
+      ),
+      title: serializer.fromJson<String>(json['title']),
+      noteJson: serializer.fromJson<String?>(json['noteJson']),
+      notePlain: serializer.fromJson<String?>(json['notePlain']),
+      dueAt: serializer.fromJson<DateTime?>(json['dueAt']),
+      completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
+      partyId: serializer.fromJson<String?>(json['partyId']),
+      contactId: serializer.fromJson<String?>(json['contactId']),
+      contactName: serializer.fromJson<String?>(json['contactName']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'type': serializer.toJson<int>(
+        $ActivitiesTable.$convertertype.toJson(type),
+      ),
+      'priority': serializer.toJson<int>(
+        $ActivitiesTable.$converterpriority.toJson(priority),
+      ),
+      'title': serializer.toJson<String>(title),
+      'noteJson': serializer.toJson<String?>(noteJson),
+      'notePlain': serializer.toJson<String?>(notePlain),
+      'dueAt': serializer.toJson<DateTime?>(dueAt),
+      'completedAt': serializer.toJson<DateTime?>(completedAt),
+      'partyId': serializer.toJson<String?>(partyId),
+      'contactId': serializer.toJson<String?>(contactId),
+      'contactName': serializer.toJson<String?>(contactName),
+    };
+  }
+
+  Activity copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    ActivityType? type,
+    ActivityPriority? priority,
+    String? title,
+    Value<String?> noteJson = const Value.absent(),
+    Value<String?> notePlain = const Value.absent(),
+    Value<DateTime?> dueAt = const Value.absent(),
+    Value<DateTime?> completedAt = const Value.absent(),
+    Value<String?> partyId = const Value.absent(),
+    Value<String?> contactId = const Value.absent(),
+    Value<String?> contactName = const Value.absent(),
+  }) => Activity(
+    id: id ?? this.id,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    type: type ?? this.type,
+    priority: priority ?? this.priority,
+    title: title ?? this.title,
+    noteJson: noteJson.present ? noteJson.value : this.noteJson,
+    notePlain: notePlain.present ? notePlain.value : this.notePlain,
+    dueAt: dueAt.present ? dueAt.value : this.dueAt,
+    completedAt: completedAt.present ? completedAt.value : this.completedAt,
+    partyId: partyId.present ? partyId.value : this.partyId,
+    contactId: contactId.present ? contactId.value : this.contactId,
+    contactName: contactName.present ? contactName.value : this.contactName,
+  );
+  Activity copyWithCompanion(ActivitiesCompanion data) {
+    return Activity(
+      id: data.id.present ? data.id.value : this.id,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      type: data.type.present ? data.type.value : this.type,
+      priority: data.priority.present ? data.priority.value : this.priority,
+      title: data.title.present ? data.title.value : this.title,
+      noteJson: data.noteJson.present ? data.noteJson.value : this.noteJson,
+      notePlain: data.notePlain.present ? data.notePlain.value : this.notePlain,
+      dueAt: data.dueAt.present ? data.dueAt.value : this.dueAt,
+      completedAt: data.completedAt.present
+          ? data.completedAt.value
+          : this.completedAt,
+      partyId: data.partyId.present ? data.partyId.value : this.partyId,
+      contactId: data.contactId.present ? data.contactId.value : this.contactId,
+      contactName: data.contactName.present
+          ? data.contactName.value
+          : this.contactName,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Activity(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('type: $type, ')
+          ..write('priority: $priority, ')
+          ..write('title: $title, ')
+          ..write('noteJson: $noteJson, ')
+          ..write('notePlain: $notePlain, ')
+          ..write('dueAt: $dueAt, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('partyId: $partyId, ')
+          ..write('contactId: $contactId, ')
+          ..write('contactName: $contactName')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    type,
+    priority,
+    title,
+    noteJson,
+    notePlain,
+    dueAt,
+    completedAt,
+    partyId,
+    contactId,
+    contactName,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Activity &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.type == this.type &&
+          other.priority == this.priority &&
+          other.title == this.title &&
+          other.noteJson == this.noteJson &&
+          other.notePlain == this.notePlain &&
+          other.dueAt == this.dueAt &&
+          other.completedAt == this.completedAt &&
+          other.partyId == this.partyId &&
+          other.contactId == this.contactId &&
+          other.contactName == this.contactName);
+}
+
+class ActivitiesCompanion extends UpdateCompanion<Activity> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<ActivityType> type;
+  final Value<ActivityPriority> priority;
+  final Value<String> title;
+  final Value<String?> noteJson;
+  final Value<String?> notePlain;
+  final Value<DateTime?> dueAt;
+  final Value<DateTime?> completedAt;
+  final Value<String?> partyId;
+  final Value<String?> contactId;
+  final Value<String?> contactName;
+  final Value<int> rowid;
+  const ActivitiesCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.type = const Value.absent(),
+    this.priority = const Value.absent(),
+    this.title = const Value.absent(),
+    this.noteJson = const Value.absent(),
+    this.notePlain = const Value.absent(),
+    this.dueAt = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.partyId = const Value.absent(),
+    this.contactId = const Value.absent(),
+    this.contactName = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ActivitiesCompanion.insert({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required ActivityType type,
+    required ActivityPriority priority,
+    required String title,
+    this.noteJson = const Value.absent(),
+    this.notePlain = const Value.absent(),
+    this.dueAt = const Value.absent(),
+    this.completedAt = const Value.absent(),
+    this.partyId = const Value.absent(),
+    this.contactId = const Value.absent(),
+    this.contactName = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : type = Value(type),
+       priority = Value(priority),
+       title = Value(title);
+  static Insertable<Activity> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<int>? type,
+    Expression<int>? priority,
+    Expression<String>? title,
+    Expression<String>? noteJson,
+    Expression<String>? notePlain,
+    Expression<DateTime>? dueAt,
+    Expression<DateTime>? completedAt,
+    Expression<String>? partyId,
+    Expression<String>? contactId,
+    Expression<String>? contactName,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (type != null) 'type': type,
+      if (priority != null) 'priority': priority,
+      if (title != null) 'title': title,
+      if (noteJson != null) 'note_json': noteJson,
+      if (notePlain != null) 'note_plain': notePlain,
+      if (dueAt != null) 'due_at': dueAt,
+      if (completedAt != null) 'completed_at': completedAt,
+      if (partyId != null) 'party_id': partyId,
+      if (contactId != null) 'contact_id': contactId,
+      if (contactName != null) 'contact_name': contactName,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ActivitiesCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<ActivityType>? type,
+    Value<ActivityPriority>? priority,
+    Value<String>? title,
+    Value<String?>? noteJson,
+    Value<String?>? notePlain,
+    Value<DateTime?>? dueAt,
+    Value<DateTime?>? completedAt,
+    Value<String?>? partyId,
+    Value<String?>? contactId,
+    Value<String?>? contactName,
+    Value<int>? rowid,
+  }) {
+    return ActivitiesCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      type: type ?? this.type,
+      priority: priority ?? this.priority,
+      title: title ?? this.title,
+      noteJson: noteJson ?? this.noteJson,
+      notePlain: notePlain ?? this.notePlain,
+      dueAt: dueAt ?? this.dueAt,
+      completedAt: completedAt ?? this.completedAt,
+      partyId: partyId ?? this.partyId,
+      contactId: contactId ?? this.contactId,
+      contactName: contactName ?? this.contactName,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<int>(
+        $ActivitiesTable.$convertertype.toSql(type.value),
+      );
+    }
+    if (priority.present) {
+      map['priority'] = Variable<int>(
+        $ActivitiesTable.$converterpriority.toSql(priority.value),
+      );
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (noteJson.present) {
+      map['note_json'] = Variable<String>(noteJson.value);
+    }
+    if (notePlain.present) {
+      map['note_plain'] = Variable<String>(notePlain.value);
+    }
+    if (dueAt.present) {
+      map['due_at'] = Variable<DateTime>(dueAt.value);
+    }
+    if (completedAt.present) {
+      map['completed_at'] = Variable<DateTime>(completedAt.value);
+    }
+    if (partyId.present) {
+      map['party_id'] = Variable<String>(partyId.value);
+    }
+    if (contactId.present) {
+      map['contact_id'] = Variable<String>(contactId.value);
+    }
+    if (contactName.present) {
+      map['contact_name'] = Variable<String>(contactName.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ActivitiesCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('type: $type, ')
+          ..write('priority: $priority, ')
+          ..write('title: $title, ')
+          ..write('noteJson: $noteJson, ')
+          ..write('notePlain: $notePlain, ')
+          ..write('dueAt: $dueAt, ')
+          ..write('completedAt: $completedAt, ')
+          ..write('partyId: $partyId, ')
+          ..write('contactId: $contactId, ')
+          ..write('contactName: $contactName, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ActivityAttachmentsTable extends ActivityAttachments
+    with TableInfo<$ActivityAttachmentsTable, ActivityAttachment> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ActivityAttachmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    clientDefault: () => _uuid.v4(),
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    clientDefault: DateTime.now,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _activityIdMeta = const VerificationMeta(
+    'activityId',
+  );
+  @override
+  late final GeneratedColumn<String> activityId = GeneratedColumn<String>(
+    'activity_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES activities (id)',
+    ),
+  );
+  static const VerificationMeta _fileNameMeta = const VerificationMeta(
+    'fileName',
+  );
+  @override
+  late final GeneratedColumn<String> fileName = GeneratedColumn<String>(
+    'file_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    activityId,
+    fileName,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'activity_attachments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ActivityAttachment> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('activity_id')) {
+      context.handle(
+        _activityIdMeta,
+        activityId.isAcceptableOrUnknown(data['activity_id']!, _activityIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_activityIdMeta);
+    }
+    if (data.containsKey('file_name')) {
+      context.handle(
+        _fileNameMeta,
+        fileName.isAcceptableOrUnknown(data['file_name']!, _fileNameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_fileNameMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ActivityAttachment map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ActivityAttachment(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      activityId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}activity_id'],
+      )!,
+      fileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}file_name'],
+      )!,
+    );
+  }
+
+  @override
+  $ActivityAttachmentsTable createAlias(String alias) {
+    return $ActivityAttachmentsTable(attachedDatabase, alias);
+  }
+}
+
+class ActivityAttachment extends DataClass
+    implements Insertable<ActivityAttachment> {
+  final String id;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  /// Set instead of deleting the row, so the deletion can sync too.
+  final DateTime? deletedAt;
+  final String activityId;
+
+  /// File name inside the attachments folder.
+  final String fileName;
+  const ActivityAttachment({
+    required this.id,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.activityId,
+    required this.fileName,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['activity_id'] = Variable<String>(activityId);
+    map['file_name'] = Variable<String>(fileName);
+    return map;
+  }
+
+  ActivityAttachmentsCompanion toCompanion(bool nullToAbsent) {
+    return ActivityAttachmentsCompanion(
+      id: Value(id),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      activityId: Value(activityId),
+      fileName: Value(fileName),
+    );
+  }
+
+  factory ActivityAttachment.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ActivityAttachment(
+      id: serializer.fromJson<String>(json['id']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      activityId: serializer.fromJson<String>(json['activityId']),
+      fileName: serializer.fromJson<String>(json['fileName']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'activityId': serializer.toJson<String>(activityId),
+      'fileName': serializer.toJson<String>(fileName),
+    };
+  }
+
+  ActivityAttachment copyWith({
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? activityId,
+    String? fileName,
+  }) => ActivityAttachment(
+    id: id ?? this.id,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    activityId: activityId ?? this.activityId,
+    fileName: fileName ?? this.fileName,
+  );
+  ActivityAttachment copyWithCompanion(ActivityAttachmentsCompanion data) {
+    return ActivityAttachment(
+      id: data.id.present ? data.id.value : this.id,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      activityId: data.activityId.present
+          ? data.activityId.value
+          : this.activityId,
+      fileName: data.fileName.present ? data.fileName.value : this.fileName,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ActivityAttachment(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('activityId: $activityId, ')
+          ..write('fileName: $fileName')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, createdAt, updatedAt, deletedAt, activityId, fileName);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ActivityAttachment &&
+          other.id == this.id &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.activityId == this.activityId &&
+          other.fileName == this.fileName);
+}
+
+class ActivityAttachmentsCompanion extends UpdateCompanion<ActivityAttachment> {
+  final Value<String> id;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> activityId;
+  final Value<String> fileName;
+  final Value<int> rowid;
+  const ActivityAttachmentsCompanion({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.activityId = const Value.absent(),
+    this.fileName = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ActivityAttachmentsCompanion.insert({
+    this.id = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String activityId,
+    required String fileName,
+    this.rowid = const Value.absent(),
+  }) : activityId = Value(activityId),
+       fileName = Value(fileName);
+  static Insertable<ActivityAttachment> custom({
+    Expression<String>? id,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? activityId,
+    Expression<String>? fileName,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (activityId != null) 'activity_id': activityId,
+      if (fileName != null) 'file_name': fileName,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ActivityAttachmentsCompanion copyWith({
+    Value<String>? id,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? activityId,
+    Value<String>? fileName,
+    Value<int>? rowid,
+  }) {
+    return ActivityAttachmentsCompanion(
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      activityId: activityId ?? this.activityId,
+      fileName: fileName ?? this.fileName,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (activityId.present) {
+      map['activity_id'] = Variable<String>(activityId.value);
+    }
+    if (fileName.present) {
+      map['file_name'] = Variable<String>(fileName.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ActivityAttachmentsCompanion(')
+          ..write('id: $id, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('activityId: $activityId, ')
+          ..write('fileName: $fileName, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$CrmDatabase extends GeneratedDatabase {
   _$CrmDatabase(QueryExecutor e) : super(e);
   $CrmDatabaseManager get managers => $CrmDatabaseManager(this);
   late final $LeadStatusesTable leadStatuses = $LeadStatusesTable(this);
   late final $PartiesTable parties = $PartiesTable(this);
   late final $DealsTable deals = $DealsTable(this);
+  late final $ActivitiesTable activities = $ActivitiesTable(this);
+  late final $ActivityAttachmentsTable activityAttachments =
+      $ActivityAttachmentsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1897,6 +3142,8 @@ abstract class _$CrmDatabase extends GeneratedDatabase {
     leadStatuses,
     parties,
     deals,
+    activities,
+    activityAttachments,
   ];
 }
 
@@ -2317,6 +3564,24 @@ final class $$PartiesTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$ActivitiesTable, List<Activity>>
+  _activitiesRefsTable(_$CrmDatabase db) => MultiTypedResultKey.fromTable(
+    db.activities,
+    aliasName: 'parties__id__activities__party_id',
+  );
+
+  $$ActivitiesTableProcessedTableManager get activitiesRefs {
+    final manager = $$ActivitiesTableTableManager(
+      $_db,
+      $_db.activities,
+    ).filter((f) => f.partyId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_activitiesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$PartiesTableFilterComposer
@@ -2433,6 +3698,31 @@ class $$PartiesTableFilterComposer
           }) => $$DealsTableFilterComposer(
             $db: $db,
             $table: $db.deals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> activitiesRefs(
+    Expression<bool> Function($$ActivitiesTableFilterComposer f) f,
+  ) {
+    final $$ActivitiesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.activities,
+      getReferencedColumn: (t) => t.partyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ActivitiesTableFilterComposer(
+            $db: $db,
+            $table: $db.activities,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -2640,6 +3930,31 @@ class $$PartiesTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> activitiesRefs<T extends Object>(
+    Expression<T> Function($$ActivitiesTableAnnotationComposer a) f,
+  ) {
+    final $$ActivitiesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.activities,
+      getReferencedColumn: (t) => t.partyId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ActivitiesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.activities,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$PartiesTableTableManager
@@ -2655,7 +3970,11 @@ class $$PartiesTableTableManager
           $$PartiesTableUpdateCompanionBuilder,
           (Party, $$PartiesTableReferences),
           Party,
-          PrefetchHooks Function({bool statusId, bool dealsRefs})
+          PrefetchHooks Function({
+            bool statusId,
+            bool dealsRefs,
+            bool activitiesRefs,
+          })
         > {
   $$PartiesTableTableManager(_$CrmDatabase db, $PartiesTable table)
     : super(
@@ -2744,65 +4063,88 @@ class $$PartiesTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({statusId = false, dealsRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [if (dealsRefs) db.deals],
-              addJoins:
-                  <
-                    T extends TableManagerState<
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic,
-                      dynamic
-                    >
-                  >(state) {
-                    if (statusId) {
-                      state =
-                          state.withJoin(
-                                currentTable: table,
-                                currentColumn: table.statusId,
-                                referencedTable: $$PartiesTableReferences
-                                    ._statusIdTable(db),
-                                referencedColumn: $$PartiesTableReferences
-                                    ._statusIdTable(db)
-                                    .id,
-                              )
-                              as T;
-                    }
+          prefetchHooksCallback:
+              ({statusId = false, dealsRefs = false, activitiesRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (dealsRefs) db.deals,
+                    if (activitiesRefs) db.activities,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (statusId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.statusId,
+                                    referencedTable: $$PartiesTableReferences
+                                        ._statusIdTable(db),
+                                    referencedColumn: $$PartiesTableReferences
+                                        ._statusIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
 
-                    return state;
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (dealsRefs)
+                        await $_getPrefetchedDataByColumns<
+                          Party,
+                          $PartiesTable,
+                          Deal,
+                          $DealsTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$PartiesTableReferences
+                              ._dealsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$PartiesTableReferences(db, table, p0).dealsRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'party_id',
+                          typedResults: items,
+                        ),
+                      if (activitiesRefs)
+                        await $_getPrefetchedDataByColumns<
+                          Party,
+                          $PartiesTable,
+                          Activity,
+                          $ActivitiesTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$PartiesTableReferences
+                              ._activitiesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$PartiesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).activitiesRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'party_id',
+                          typedResults: items,
+                        ),
+                    ];
                   },
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (dealsRefs)
-                    await $_getPrefetchedDataByColumns<
-                      Party,
-                      $PartiesTable,
-                      Deal,
-                      $DealsTable
-                    >(
-                      currentTable: table,
-                      referencedTable: $$PartiesTableReferences._dealsRefsTable(
-                        db,
-                      ),
-                      managerFromTypedResult: (p0) =>
-                          $$PartiesTableReferences(db, table, p0).dealsRefs,
-                      currentColumn: 'id',
-                      referencedColumn: 'party_id',
-                      typedResults: items,
-                    ),
-                ];
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -2819,7 +4161,11 @@ typedef $$PartiesTableProcessedTableManager =
       $$PartiesTableUpdateCompanionBuilder,
       (Party, $$PartiesTableReferences),
       Party,
-      PrefetchHooks Function({bool statusId, bool dealsRefs})
+      PrefetchHooks Function({
+        bool statusId,
+        bool dealsRefs,
+        bool activitiesRefs,
+      })
     >;
 typedef $$DealsTableCreateCompanionBuilder =
     DealsCompanion Function({
@@ -3233,6 +4579,957 @@ typedef $$DealsTableProcessedTableManager =
       Deal,
       PrefetchHooks Function({bool partyId})
     >;
+typedef $$ActivitiesTableCreateCompanionBuilder =
+    ActivitiesCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required ActivityType type,
+      required ActivityPriority priority,
+      required String title,
+      Value<String?> noteJson,
+      Value<String?> notePlain,
+      Value<DateTime?> dueAt,
+      Value<DateTime?> completedAt,
+      Value<String?> partyId,
+      Value<String?> contactId,
+      Value<String?> contactName,
+      Value<int> rowid,
+    });
+typedef $$ActivitiesTableUpdateCompanionBuilder =
+    ActivitiesCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<ActivityType> type,
+      Value<ActivityPriority> priority,
+      Value<String> title,
+      Value<String?> noteJson,
+      Value<String?> notePlain,
+      Value<DateTime?> dueAt,
+      Value<DateTime?> completedAt,
+      Value<String?> partyId,
+      Value<String?> contactId,
+      Value<String?> contactName,
+      Value<int> rowid,
+    });
+
+final class $$ActivitiesTableReferences
+    extends BaseReferences<_$CrmDatabase, $ActivitiesTable, Activity> {
+  $$ActivitiesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $PartiesTable _partyIdTable(_$CrmDatabase db) =>
+      db.parties.createAlias('activities__party_id__parties__id');
+
+  $$PartiesTableProcessedTableManager? get partyId {
+    final $_column = $_itemColumn<String>('party_id');
+    if ($_column == null) return null;
+    final manager = $$PartiesTableTableManager(
+      $_db,
+      $_db.parties,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_partyIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $ActivityAttachmentsTable,
+    List<ActivityAttachment>
+  >
+  _activityAttachmentsRefsTable(_$CrmDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.activityAttachments,
+        aliasName: 'activities__id__activity_attachments__activity_id',
+      );
+
+  $$ActivityAttachmentsTableProcessedTableManager get activityAttachmentsRefs {
+    final manager = $$ActivityAttachmentsTableTableManager(
+      $_db,
+      $_db.activityAttachments,
+    ).filter((f) => f.activityId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _activityAttachmentsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$ActivitiesTableFilterComposer
+    extends Composer<_$CrmDatabase, $ActivitiesTable> {
+  $$ActivitiesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<ActivityType, ActivityType, int> get type =>
+      $composableBuilder(
+        column: $table.type,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnWithTypeConverterFilters<ActivityPriority, ActivityPriority, int>
+  get priority => $composableBuilder(
+    column: $table.priority,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get noteJson => $composableBuilder(
+    column: $table.noteJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notePlain => $composableBuilder(
+    column: $table.notePlain,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get dueAt => $composableBuilder(
+    column: $table.dueAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get contactId => $composableBuilder(
+    column: $table.contactId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get contactName => $composableBuilder(
+    column: $table.contactName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$PartiesTableFilterComposer get partyId {
+    final $$PartiesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.partyId,
+      referencedTable: $db.parties,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PartiesTableFilterComposer(
+            $db: $db,
+            $table: $db.parties,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> activityAttachmentsRefs(
+    Expression<bool> Function($$ActivityAttachmentsTableFilterComposer f) f,
+  ) {
+    final $$ActivityAttachmentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.activityAttachments,
+      getReferencedColumn: (t) => t.activityId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ActivityAttachmentsTableFilterComposer(
+            $db: $db,
+            $table: $db.activityAttachments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$ActivitiesTableOrderingComposer
+    extends Composer<_$CrmDatabase, $ActivitiesTable> {
+  $$ActivitiesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get priority => $composableBuilder(
+    column: $table.priority,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get noteJson => $composableBuilder(
+    column: $table.noteJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notePlain => $composableBuilder(
+    column: $table.notePlain,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get dueAt => $composableBuilder(
+    column: $table.dueAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get contactId => $composableBuilder(
+    column: $table.contactId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get contactName => $composableBuilder(
+    column: $table.contactName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$PartiesTableOrderingComposer get partyId {
+    final $$PartiesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.partyId,
+      referencedTable: $db.parties,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PartiesTableOrderingComposer(
+            $db: $db,
+            $table: $db.parties,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ActivitiesTableAnnotationComposer
+    extends Composer<_$CrmDatabase, $ActivitiesTable> {
+  $$ActivitiesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<ActivityType, int> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<ActivityPriority, int> get priority =>
+      $composableBuilder(column: $table.priority, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get noteJson =>
+      $composableBuilder(column: $table.noteJson, builder: (column) => column);
+
+  GeneratedColumn<String> get notePlain =>
+      $composableBuilder(column: $table.notePlain, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get dueAt =>
+      $composableBuilder(column: $table.dueAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
+    column: $table.completedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get contactId =>
+      $composableBuilder(column: $table.contactId, builder: (column) => column);
+
+  GeneratedColumn<String> get contactName => $composableBuilder(
+    column: $table.contactName,
+    builder: (column) => column,
+  );
+
+  $$PartiesTableAnnotationComposer get partyId {
+    final $$PartiesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.partyId,
+      referencedTable: $db.parties,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$PartiesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.parties,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> activityAttachmentsRefs<T extends Object>(
+    Expression<T> Function($$ActivityAttachmentsTableAnnotationComposer a) f,
+  ) {
+    final $$ActivityAttachmentsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.activityAttachments,
+          getReferencedColumn: (t) => t.activityId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$ActivityAttachmentsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.activityAttachments,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+}
+
+class $$ActivitiesTableTableManager
+    extends
+        RootTableManager<
+          _$CrmDatabase,
+          $ActivitiesTable,
+          Activity,
+          $$ActivitiesTableFilterComposer,
+          $$ActivitiesTableOrderingComposer,
+          $$ActivitiesTableAnnotationComposer,
+          $$ActivitiesTableCreateCompanionBuilder,
+          $$ActivitiesTableUpdateCompanionBuilder,
+          (Activity, $$ActivitiesTableReferences),
+          Activity,
+          PrefetchHooks Function({bool partyId, bool activityAttachmentsRefs})
+        > {
+  $$ActivitiesTableTableManager(_$CrmDatabase db, $ActivitiesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ActivitiesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ActivitiesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ActivitiesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<ActivityType> type = const Value.absent(),
+                Value<ActivityPriority> priority = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String?> noteJson = const Value.absent(),
+                Value<String?> notePlain = const Value.absent(),
+                Value<DateTime?> dueAt = const Value.absent(),
+                Value<DateTime?> completedAt = const Value.absent(),
+                Value<String?> partyId = const Value.absent(),
+                Value<String?> contactId = const Value.absent(),
+                Value<String?> contactName = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ActivitiesCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                type: type,
+                priority: priority,
+                title: title,
+                noteJson: noteJson,
+                notePlain: notePlain,
+                dueAt: dueAt,
+                completedAt: completedAt,
+                partyId: partyId,
+                contactId: contactId,
+                contactName: contactName,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required ActivityType type,
+                required ActivityPriority priority,
+                required String title,
+                Value<String?> noteJson = const Value.absent(),
+                Value<String?> notePlain = const Value.absent(),
+                Value<DateTime?> dueAt = const Value.absent(),
+                Value<DateTime?> completedAt = const Value.absent(),
+                Value<String?> partyId = const Value.absent(),
+                Value<String?> contactId = const Value.absent(),
+                Value<String?> contactName = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ActivitiesCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                type: type,
+                priority: priority,
+                title: title,
+                noteJson: noteJson,
+                notePlain: notePlain,
+                dueAt: dueAt,
+                completedAt: completedAt,
+                partyId: partyId,
+                contactId: contactId,
+                contactName: contactName,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ActivitiesTable, Activity>(table),
+                  $$ActivitiesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({partyId = false, activityAttachmentsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (activityAttachmentsRefs) db.activityAttachments,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (partyId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.partyId,
+                                    referencedTable: $$ActivitiesTableReferences
+                                        ._partyIdTable(db),
+                                    referencedColumn:
+                                        $$ActivitiesTableReferences
+                                            ._partyIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (activityAttachmentsRefs)
+                        await $_getPrefetchedDataByColumns<
+                          Activity,
+                          $ActivitiesTable,
+                          ActivityAttachment,
+                          $ActivityAttachmentsTable
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ActivitiesTableReferences
+                              ._activityAttachmentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ActivitiesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).activityAttachmentsRefs,
+                          currentColumn: 'id',
+                          referencedColumn: 'activity_id',
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$ActivitiesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$CrmDatabase,
+      $ActivitiesTable,
+      Activity,
+      $$ActivitiesTableFilterComposer,
+      $$ActivitiesTableOrderingComposer,
+      $$ActivitiesTableAnnotationComposer,
+      $$ActivitiesTableCreateCompanionBuilder,
+      $$ActivitiesTableUpdateCompanionBuilder,
+      (Activity, $$ActivitiesTableReferences),
+      Activity,
+      PrefetchHooks Function({bool partyId, bool activityAttachmentsRefs})
+    >;
+typedef $$ActivityAttachmentsTableCreateCompanionBuilder =
+    ActivityAttachmentsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String activityId,
+      required String fileName,
+      Value<int> rowid,
+    });
+typedef $$ActivityAttachmentsTableUpdateCompanionBuilder =
+    ActivityAttachmentsCompanion Function({
+      Value<String> id,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> activityId,
+      Value<String> fileName,
+      Value<int> rowid,
+    });
+
+final class $$ActivityAttachmentsTableReferences
+    extends
+        BaseReferences<
+          _$CrmDatabase,
+          $ActivityAttachmentsTable,
+          ActivityAttachment
+        > {
+  $$ActivityAttachmentsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ActivitiesTable _activityIdTable(_$CrmDatabase db) => db.activities
+      .createAlias('activity_attachments__activity_id__activities__id');
+
+  $$ActivitiesTableProcessedTableManager get activityId {
+    final $_column = $_itemColumn<String>('activity_id')!;
+
+    final manager = $$ActivitiesTableTableManager(
+      $_db,
+      $_db.activities,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_activityIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$ActivityAttachmentsTableFilterComposer
+    extends Composer<_$CrmDatabase, $ActivityAttachmentsTable> {
+  $$ActivityAttachmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get fileName => $composableBuilder(
+    column: $table.fileName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ActivitiesTableFilterComposer get activityId {
+    final $$ActivitiesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.activityId,
+      referencedTable: $db.activities,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ActivitiesTableFilterComposer(
+            $db: $db,
+            $table: $db.activities,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ActivityAttachmentsTableOrderingComposer
+    extends Composer<_$CrmDatabase, $ActivityAttachmentsTable> {
+  $$ActivityAttachmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fileName => $composableBuilder(
+    column: $table.fileName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ActivitiesTableOrderingComposer get activityId {
+    final $$ActivitiesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.activityId,
+      referencedTable: $db.activities,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ActivitiesTableOrderingComposer(
+            $db: $db,
+            $table: $db.activities,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ActivityAttachmentsTableAnnotationComposer
+    extends Composer<_$CrmDatabase, $ActivityAttachmentsTable> {
+  $$ActivityAttachmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get fileName =>
+      $composableBuilder(column: $table.fileName, builder: (column) => column);
+
+  $$ActivitiesTableAnnotationComposer get activityId {
+    final $$ActivitiesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.activityId,
+      referencedTable: $db.activities,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ActivitiesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.activities,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ActivityAttachmentsTableTableManager
+    extends
+        RootTableManager<
+          _$CrmDatabase,
+          $ActivityAttachmentsTable,
+          ActivityAttachment,
+          $$ActivityAttachmentsTableFilterComposer,
+          $$ActivityAttachmentsTableOrderingComposer,
+          $$ActivityAttachmentsTableAnnotationComposer,
+          $$ActivityAttachmentsTableCreateCompanionBuilder,
+          $$ActivityAttachmentsTableUpdateCompanionBuilder,
+          (ActivityAttachment, $$ActivityAttachmentsTableReferences),
+          ActivityAttachment,
+          PrefetchHooks Function({bool activityId})
+        > {
+  $$ActivityAttachmentsTableTableManager(
+    _$CrmDatabase db,
+    $ActivityAttachmentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ActivityAttachmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ActivityAttachmentsTableOrderingComposer(
+                $db: db,
+                $table: table,
+              ),
+          createComputedFieldComposer: () =>
+              $$ActivityAttachmentsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> activityId = const Value.absent(),
+                Value<String> fileName = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ActivityAttachmentsCompanion(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                activityId: activityId,
+                fileName: fileName,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String activityId,
+                required String fileName,
+                Value<int> rowid = const Value.absent(),
+              }) => ActivityAttachmentsCompanion.insert(
+                id: id,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                activityId: activityId,
+                fileName: fileName,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ActivityAttachmentsTable, ActivityAttachment>(
+                    table,
+                  ),
+                  $$ActivityAttachmentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({activityId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (activityId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.activityId,
+                                referencedTable:
+                                    $$ActivityAttachmentsTableReferences
+                                        ._activityIdTable(db),
+                                referencedColumn:
+                                    $$ActivityAttachmentsTableReferences
+                                        ._activityIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$ActivityAttachmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$CrmDatabase,
+      $ActivityAttachmentsTable,
+      ActivityAttachment,
+      $$ActivityAttachmentsTableFilterComposer,
+      $$ActivityAttachmentsTableOrderingComposer,
+      $$ActivityAttachmentsTableAnnotationComposer,
+      $$ActivityAttachmentsTableCreateCompanionBuilder,
+      $$ActivityAttachmentsTableUpdateCompanionBuilder,
+      (ActivityAttachment, $$ActivityAttachmentsTableReferences),
+      ActivityAttachment,
+      PrefetchHooks Function({bool activityId})
+    >;
 
 class $CrmDatabaseManager {
   final _$CrmDatabase _db;
@@ -3243,4 +5540,8 @@ class $CrmDatabaseManager {
       $$PartiesTableTableManager(_db, _db.parties);
   $$DealsTableTableManager get deals =>
       $$DealsTableTableManager(_db, _db.deals);
+  $$ActivitiesTableTableManager get activities =>
+      $$ActivitiesTableTableManager(_db, _db.activities);
+  $$ActivityAttachmentsTableTableManager get activityAttachments =>
+      $$ActivityAttachmentsTableTableManager(_db, _db.activityAttachments);
 }

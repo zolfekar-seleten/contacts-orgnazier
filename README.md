@@ -51,7 +51,7 @@ lib/
     local_time/    country → IANA time zones, local time, late-night warnings
     templates/     saved message templates (shared_preferences)
     crm/           leads, clients, lead statuses and deals (SQLite via drift)
-    shell/         bottom tab bar: Contacts · Leads · Clients
+    shell/         bottom tab bar: Contacts · Leads · Clients · Activities
     settings/      theme + default region (shared_preferences)
 ```
 
@@ -101,6 +101,16 @@ SQLite database (`drift`, file `contacts_organizer.sqlite`).
   client).
 - Every table uses UUID keys, `updatedAt` and soft deletes (`deletedAt`) so
   iCloud sync can merge devices later.
+
+### Activities
+
+Calls, meetings, tasks, emails and lunches (`Activities` table, schema v2),
+each with a priority (high, medium, low), an optional date and time, and who
+it is with: a lead or client (`partyId`) or a phone contact (`contactId`
+plus a saved name). Notes are styled with `flutter_quill` and stored as
+Quill Delta JSON next to a plain-text copy for previews. Images are copied
+into the app's documents folder (`attachments/`, UUID file names) and listed
+in `ActivityAttachments`.
 
 Schema changes: edit `lib/features/crm/data/crm_database.dart`, bump
 `schemaVersion`, add a migration, then run
